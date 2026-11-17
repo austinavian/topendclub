@@ -1,23 +1,25 @@
 ---
-// A stack of event photos that shuffles on every visit and crossfades on a timer.
-// Only the photo on screen (and the next one) is downloaded. Without JavaScript the first photo shows.
+// A stack of event photos that crossfades on a timer. Featured photos open the show and
+// repeat more often (see src/scripts/rotator.ts). Only the photo on screen (and the next one)
+// is downloaded. Without JavaScript the first photo shows.
 import photos from '../data/photos-2026.json';
 
 interface Props {
-  keys: string[];          // photo keys from photos-2026.json
+  keys?: string[];         // photo keys from photos-2026.json (all of them if left out)
   interval?: number;       // ms between photos
   sizes?: string;
   caption?: boolean;       // show the photo's description in the corner
   class?: string;
 }
 const { keys, interval = 6500, sizes = '100vw', caption = false, class: cls } = Astro.props;
-const list = keys.map((k) => photos.find((p) => p.key === k)!).filter(Boolean);
+const list = (keys ? keys.map((k) => photos.find((p) => p.key === k)!).filter(Boolean) : photos)
+  .slice().sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
 const base = '/photos/2026/';
 const set = (k: string) => `${base}${k}-sm.webp 960w, ${base}${k}.webp 1920w`;
 ---
 <div class:list={['rot', cls]} data-rotator data-interval={interval} aria-roledescription="slideshow">
   {list.map((p, i) => (
-    <picture class="rot__slide" data-alt={p.alt} aria-hidden="true">
+    <picture class="rot__slide" data-alt={p.alt} data-featured={p.featured ? '' : undefined} aria-hidden="true">
       <source type="image/webp" data-srcset={set(p.key)} sizes={sizes} />
       <img data-src={`${base}${p.key}.jpg`} alt="" style={`object-position:${p.focus}`} decoding="async" />
     </picture>

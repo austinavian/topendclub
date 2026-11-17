@@ -1,106 +1,51 @@
 [
   {
-    "key": "leaders",
-    "alt": "The Top End Club leaders in their club shirts, arms crossed",
-    "focus": "50% 30%",
+    "key": "2026-spring-draw-check-presentation",
+    "title": "D.R.A.W. check presentation, Spring 2026",
+    "alt": "Top End Club members present an $11,592 check to D.R.A.W. under the D.R.A.W. tent at zMAX Dragway",
+    "focus": "50% 40%",
     "w": 1920,
-    "h": 1440
+    "h": 1391,
+    "featured": true
   },
   {
-    "key": "check",
-    "alt": "Club members hold the $11,592 check for D.R.A.W. under the D.R.A.W. tent",
-    "focus": "50% 45%",
-    "w": 1920,
-    "h": 1080
-  },
-  {
-    "key": "check-2",
-    "alt": "The club presents its $11,592 check to D.R.A.W.",
-    "focus": "55% 45%",
-    "w": 1920,
-    "h": 1080
-  },
-  {
-    "key": "crowd-dusk",
-    "alt": "A full house at dinner under the club tents at dusk",
-    "focus": "50% 60%",
-    "w": 1920,
-    "h": 1440
-  },
-  {
-    "key": "crowd",
-    "alt": "Racers and friends share dinner under the club tents",
-    "focus": "50% 60%",
-    "w": 1920,
-    "h": 1440
-  },
-  {
-    "key": "guitar",
-    "alt": "A guest shows off a red electric guitar from the benefit auction",
+    "key": "2026-spring-prayer",
+    "title": "Prayer on stage, Spring 2026",
+    "alt": "Club members bow their heads as the evening opens in prayer on stage",
     "focus": "45% 40%",
-    "w": 1920,
-    "h": 1440
+    "w": 1672,
+    "h": 941,
+    "featured": true
   },
   {
-    "key": "guitar-2",
-    "alt": "A red electric guitar from the benefit auction",
-    "focus": "45% 40%",
-    "w": 1920,
-    "h": 1440
-  },
-  {
-    "key": "serving",
-    "alt": "Club members serve barbecue down the buffet line",
-    "focus": "55% 50%",
-    "w": 1920,
-    "h": 1440
-  },
-  {
-    "key": "laughs",
-    "alt": "Guests laugh at the table as plates come around",
-    "focus": "55% 50%",
-    "w": 1920,
-    "h": 1440
-  },
-  {
-    "key": "friends",
-    "alt": "Friends at a table in the club tent",
+    "key": "2026-spring-draw-check-group",
+    "title": "D.R.A.W. check presentation, Spring 2026 (wide)",
+    "alt": "The club gathers with the $11,592 D.R.A.W. check, a $100,000+ milestone plaque and a tribute to Rosalee Noble",
     "focus": "50% 55%",
     "w": 1920,
     "h": 1440
   },
   {
-    "key": "banner",
-    "alt": "The Top End Club sponsor banner at zMAX Dragway",
-    "focus": "40% 65%",
+    "key": "2026-spring-dinner-tents-dusk",
+    "title": "Dinner under the tents at dusk, Spring 2026",
+    "alt": "A full house at dinner under the club tents as night falls over the pits",
+    "focus": "60% 60%",
     "w": 1920,
     "h": 1440
   },
   {
-    "key": "prayer",
-    "alt": "The club bows heads for a prayer before dinner",
-    "focus": "50% 40%",
-    "w": 1920,
-    "h": 1081
-  },
-  {
-    "key": "auction",
-    "alt": "Auction jackets on the rack as bidders gather",
-    "focus": "50% 40%",
+    "key": "2026-spring-dinner-tents",
+    "title": "Dinner under the tents, Spring 2026",
+    "alt": "Racers, crews and friends share a barbecue dinner at the club tables",
+    "focus": "50% 65%",
     "w": 1920,
     "h": 1440
   },
   {
-    "key": "auction-crowd",
-    "alt": "Bidders gather for the live auction after dinner",
-    "focus": "50% 40%",
-    "w": 1920,
-    "h": 1440
-  },
-  {
-    "key": "night",
-    "alt": "Guests mingle in the pits as night falls",
-    "focus": "45% 45%",
+    "key": "2026-spring-serving-line",
+    "title": "Serving line, Spring 2026",
+    "alt": "Club members serve barbecue plates down the buffet line",
+    "focus": "40% 40%",
     "w": 1920,
     "h": 1440
   }

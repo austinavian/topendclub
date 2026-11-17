@@ -23,7 +23,7 @@ const years = Array.from({ length: latest.year - first + 1 }, (_, i) => latest.y
         {latest.raised && <p class="t-body latest__raised t-tabular">{compactUsd(latest.raised)} raised for D.R.A.W.</p>}
         <span class="link-chevron latest__link">See the event</span>
       </div>
-      <PhotoRotator class="latest__photos" keys={['check-2', 'crowd', 'serving', 'friends', 'auction', 'auction-crowd', 'guitar-2', 'laughs']} interval={5200} sizes="(max-width: 833px) 100vw, 560px" />
+      <PhotoRotator class="latest__photos" interval={5200} sizes="(max-width: 833px) 100vw, 560px" />
     </a>
   </section>
 
