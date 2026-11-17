@@ -1,4 +1,190 @@
 ---
-import ComingSoon from '../../components/ComingSoon.astro';
+import Base from '../../layouts/Base.astro';
+import site from '../../data/site.json';
+import { allEvents, compactUsd } from '../../lib/events';
+
+const events = await allEvents();
+const byId = Object.fromEntries(events.map((e) => [e.id, e]));
+const latest = events[events.length - 1];
+const years = latest.year - site.founded;
+const giving = events.filter((e) => e.raised);
+const best = giving.reduce((a, b) => (b.raised! > a.raised! ? b : a));
+
+const leaders = [
+  { name: 'Rodney Smith', role: 'Founder' },
+  { name: 'Tim Ridge', role: 'Founder' },
+  { name: 'Jerry Bishop', role: 'Founder' },
+  { name: 'James Larson', role: 'Founder' },
+  { name: 'Jimmy Pless', role: 'Leader' },
+  { name: 'Gerald Bridges', role: 'Leader' },
+];
+const initials = (n: string) => n.split(' ').map((p) => p[0]).join('');
+
+const milestones = [
+  { year: 2012, id: '2012-spring', title: 'The first cookout', body: 'Four friends set up in the trackside campsites past the finish line and cooked dinner for whoever came by after the race.' },
+  { year: 2015, id: '2015-fall', title: 'The oval emblem', body: 'The club’s emblem shows up on the flyer for the first time.' },
+  { year: 2016, id: '2016-spring', title: 'The first gift to D.R.A.W.', body: 'Every dollar from the night, $1,460, went to D.R.A.W. in honor of Mark Lyle and Ronnie Davis.' },
+  { year: 2016, id: '2016-fall', title: 'Organization of the Year', body: 'D.R.A.W. named the Top End Club its 2016 Organization of the Year.' },
+  { year: 2018, id: '2018-spring', title: 'Sites 13 and 14', body: 'A new home in the Sportsman pits, right ahead of the timing lights. The club has been there ever since.' },
+  { year: 2020, title: 'A year off', body: 'COVID-19 cancelled both events.' },
+  { year: 2021, id: '2021-fall', title: 'Past $20,000', body: 'Two private nights for sponsors and invited teams carried the club past its $20,000 goal.' },
+  { year: 2024, id: '2024-fall', title: 'Remembering Rosalee', body: 'A record night in memory of Rosalee Noble took the club past $50,000 given.' },
+  { year: 2025, id: '2025-fall', title: 'The final fall event', body: 'A celebration of Rosalee’s life, and the club’s biggest night yet.' },
+  { year: 2026, id: '2026-spring', title: 'Past $100,000', body: 'Now one big spring night a year, and more than $100,000 given to D.R.A.W.' },
+];
 ---
-<ComingSoon title="About" intro="Who we are, and how it started in 2012." />
+<Base title="About" description={`The Top End Club has cooked dinner trackside at zMAX Dragway since ${site.founded}, and gives what it raises to D.R.A.W.`}>
+  <section class="ab-hero">
+    <picture class="ab-hero__photo">
+      <source type="image/webp" srcset="/photos/about/2026-club-leaders-sm.webp 960w, /photos/about/2026-club-leaders.webp 1920w" sizes="(max-width: 833px) 100vw, 1100px" />
+      <img src="/photos/about/2026-club-leaders.jpg" alt="The six leaders of the Top End Club in their club shirts" width="1920" height="1440" fetchpriority="high" />
+    </picture>
+    <div class="container ab-hero__text">
+      <p class="t-eyebrow ab-hero__eyebrow reveal">About the club</p>
+      <h1 class="t-charlotte t-charlotte--xl reveal" style="--reveal-delay:60ms">About</h1>
+      <p class="t-body-large ab-hero__intro reveal" style="--reveal-delay:140ms">A few friends, a few grills and a spot by the track. Since {site.founded}, the Top End Club has cooked dinner for racers, crews and fans at zMAX Dragway, and given what it raises to D.R.A.W.</p>
+    </div>
+  </section>
+
+  <section class="section container ab-story">
+    <div class="ab-story__lead">
+      <h2 class="t-headline reveal">How it started</h2>
+    </div>
+    <div class="ab-story__body">
+      <p class="t-body-large reveal">In the spring of {site.founded}, Rodney Smith, Tim Ridge, Jerry Bishop and James Larson set up in the trackside campsites just past the finish line at zMAX Dragway. After the race, they cooked dinner for whoever came by. That was the <a href="/events/2012-spring/">first Top End Club</a>.</p>
+      <p class="t-body reveal">They came back that fall, and every spring and fall after that. In 2016, after losing friends Mark Lyle and Ronnie Davis, the club started giving everything it raised to <a href={site.draw.url} rel="noopener" target="_blank">D.R.A.W.</a>, the Drag Racing Association of Women, which helps injured racers and their families. D.R.A.W. named the club its Organization of the Year that same year.</p>
+      <p class="t-body reveal">Sponsors help cover the food, tents and signs, so the money from donations and the live auction goes to D.R.A.W. From 2026, the club holds one big night each spring.</p>
+    </div>
+  </section>
+
+  <section class="section--dark ab-stats">
+    <div class="container">
+      <dl class="ab-stats__grid">
+        <div class="reveal"><dt>Years trackside</dt><dd class="t-tabular">{years}</dd></div>
+        <div class="reveal" style="--reveal-delay:60ms"><dt>Cookouts</dt><dd class="t-tabular"><a href="/events/">{events.length}</a></dd></div>
+        <div class="reveal" style="--reveal-delay:120ms"><dt>Given to D.R.A.W.</dt><dd class="t-tabular"><a href="/draw/">{compactUsd(site.draw.total)}</a></dd></div>
+        <div class="reveal" style="--reveal-delay:180ms"><dt>Best night</dt><dd class="t-tabular"><a href={`/events/${best.id}/`}>{compactUsd(best.raised!)}</a><span>{best.season} {best.year}</span></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section container" id="leaders">
+    <h2 class="t-headline reveal">Founders and leaders</h2>
+    <p class="t-body-large t-secondary ab-lead reveal">Four founders started the club in {site.founded}. {years} years on, they still run it, with Jimmy Pless and Gerald Bridges.</p>
+    <ul class="ab-people" role="list">
+      {leaders.map((l, i) => (
+        <li class="ab-person card reveal" style={`--reveal-delay:${(i % 3) * 60}ms`}>
+          <span class="ab-person__mono" aria-hidden="true">{initials(l.name)}</span>
+          <div>
+            <h3 class="t-title-3">{l.name}</h3>
+            <p class="t-callout t-secondary">{l.role === 'Founder' ? `Founder, ${site.founded}` : 'Club leader'}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section section--surface" id="milestones">
+    <div class="container">
+      <h2 class="t-headline reveal">Milestones</h2>
+      <ol class="ab-miles" role="list">
+        {milestones.map((m, i) => {
+          const e = m.id ? byId[m.id] : undefined;
+          return (
+            <li class="ab-mile reveal" style={`--reveal-delay:${(i % 2) * 60}ms`}>
+              <span class="ab-mile__year t-tabular">{m.year}</span>
+              <div class="ab-mile__body">
+                <h3 class="t-title-3">{e ? <a href={`/events/${e.id}/`}>{m.title}</a> : m.title}</h3>
+                <p class="t-callout t-secondary">{m.body}</p>
+                {e && <a class="ab-mile__ev t-caption" href={`/events/${e.id}/`}>{e.season} {e.year} event</a>}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section container ab-find">
+    <div class="ab-find__text">
+      <h2 class="t-headline reveal">Where to find us</h2>
+      <p class="t-body-large t-secondary reveal">Sites 13 and 14 in the Sportsman pits at zMAX Dragway in Concord, North Carolina, right ahead of the timing lights. Look for the tents on Saturday night of the spring NHRA national event.</p>
+      <p class="ab-find__links reveal">
+        <a class="button" href={`/events/${latest.id}/`}>The {latest.season} {latest.year} event</a>
+        <a class="link-chevron" href={site.instagram} rel="noopener" target="_blank">Follow on Instagram</a>
+      </p>
+    </div>
+    <picture class="ab-find__photo card reveal reveal--scale">
+      <source type="image/webp" srcset="/photos/2026/2026-spring-dinner-tents-dusk-sm.webp 960w, /photos/2026/2026-spring-dinner-tents-dusk.webp 1920w" sizes="(max-width: 833px) 100vw, 540px" />
+      <img src="/photos/2026/2026-spring-dinner-tents-dusk.jpg" alt="A full house at dinner under the club tents as night falls over the pits" loading="lazy" decoding="async" width="1600" height="1200" />
+    </picture>
+  </section>
+</Base>
+
+<style>
+  .ab-hero { position: relative; overflow: hidden; background: #000; color: #f5f5f7; padding-bottom: clamp(56px, 8vw, 104px); }
+  .ab-hero__photo { display: block; width: min(1100px, 100%); margin-inline: auto; }
+  .ab-hero__photo img {
+    display: block; width: 100%; height: auto;
+    -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 100%), linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to bottom, #000 60%, transparent 100%), linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    mask-composite: intersect;
+  }
+  .ab-hero__text { position: relative; display: grid; justify-items: center; gap: var(--space-4); margin-top: clamp(-160px, -12vw, -48px); text-align: center; }
+  .ab-hero__eyebrow { color: #ff6b5e; }
+  .ab-hero__intro { max-width: 640px; color: rgba(255, 255, 255, 0.78); }
+
+  .ab-story { display: grid; grid-template-columns: 1fr 1.6fr; gap: clamp(24px, 5vw, 80px); align-items: start; }
+  .ab-story__body { display: grid; gap: var(--space-5); }
+  .ab-story__body p { color: var(--text-2); }
+  .ab-story__body p:first-child { color: var(--text); }
+
+  .ab-stats { padding-block: clamp(56px, 8vw, 96px); }
+  .ab-stats__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
+  .ab-stats__grid > div { display: grid; align-content: start; gap: 6px; padding-inline: 20px; text-align: center; }
+  .ab-stats__grid > div + div { border-left: 1px solid rgba(255, 255, 255, 0.16); }
+  .ab-stats dt { font-size: 14px; color: rgba(255, 255, 255, 0.6); }
+  .ab-stats dd { margin: 0; display: grid; gap: 4px; font-size: clamp(36px, 5vw, 64px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; color: #fff; }
+  .ab-stats dd a { color: inherit; }
+  .ab-stats dd a:hover { text-decoration: none; color: #ff6b5e; }
+  .ab-stats dd span { font-size: 14px; font-weight: 400; letter-spacing: 0; color: rgba(255, 255, 255, 0.6); }
+
+  .ab-lead { max-width: 680px; margin-top: var(--space-3); }
+  .ab-people { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: var(--space-7) 0 0; padding: 0; }
+  .ab-person { display: flex; align-items: center; gap: 16px; padding: 20px 22px; }
+  .ab-person__mono {
+    flex: none; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%;
+    background: var(--tec-red-gradient); color: #fff; font-family: var(--font-display); font-style: italic; font-size: 20px; letter-spacing: 0.02em;
+  }
+
+  .ab-miles { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 48px; margin: var(--space-7) 0 0; padding: 0; }
+  .ab-mile { display: grid; grid-template-columns: 64px 1fr; gap: 16px; padding-top: 18px; border-top: 1px solid var(--separator); }
+  .ab-mile__year { font-size: 15px; font-weight: 600; color: var(--accent); padding-top: 3px; }
+  .ab-mile__body { display: grid; gap: 6px; }
+  .ab-mile__body h3 a { color: inherit; }
+  .ab-mile__body h3 a:hover { color: var(--accent); text-decoration: none; }
+  .ab-mile__ev { color: var(--text-3); }
+  .ab-mile__ev:hover { color: var(--accent); }
+
+  .ab-find { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 72px); align-items: center; }
+  .ab-find__text { display: grid; gap: var(--space-5); }
+  .ab-find__links { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 24px; }
+  .ab-find__photo { overflow: hidden; }
+  .ab-find__photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+
+  @media (max-width: 833px) {
+    .ab-story, .ab-find { grid-template-columns: minmax(0, 1fr); }
+    .ab-stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 32px; }
+    .ab-stats__grid > div + div { border-left: 0; }
+    .ab-stats__grid > div:nth-child(even) { border-left: 1px solid rgba(255, 255, 255, 0.16); }
+    .ab-people { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ab-miles { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .ab-hero__text { margin-top: -28px; }
+    .ab-people { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .ab-person { padding: 14px 16px; }
+    .ab-mile { grid-template-columns: 52px 1fr; }
+  }
+</style>
