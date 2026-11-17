@@ -1,18 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
 import EventCard from '../components/EventCard.astro';
+import PhotoRotator from '../components/PhotoRotator.astro';
+import YouTube from '../components/YouTube.astro';
 import site from '../data/site.json';
 import sponsors from '../data/sponsors.json';
-import { allEvents, styleFor, longDate, usd } from '../lib/events';
+import { allEvents, usd } from '../lib/events';
 
 const events = await allEvents();
 const latest = events[events.length - 1];
-const ls = styleFor(latest);
 const recent = events.slice(-4, -1).reverse();
 const years = latest.year - site.founded;
+// Videos for events already on this page: the latest (hero) and the recent cards.
+const videos = [latest, ...recent].filter((e) => e.video);
 ---
 <Base description={`${site.name}: a trackside cookout at zMAX Dragway since ${site.founded}, raising money for D.R.A.W.`}>
   <section class="hero">
+    <PhotoRotator class="hero__photos" keys={['leaders', 'check', 'crowd-dusk', 'guitar', 'laughs', 'banner', 'prayer', 'night', 'serving']} sizes="(max-width: 833px) 100vw, 62vw" caption />
     <div class="container hero__inner">
       <div class="hero__text">
         <p class="t-eyebrow reveal">zMAX Dragway · Concord, North Carolina</p>
@@ -25,9 +29,6 @@ const years = latest.year - site.founded;
           <a class="link-chevron" href="/events/">All events</a>
         </p>
       </div>
-      <a class="hero__flyer reveal reveal--scale" href={`/events/${latest.id}/`} style={`--reveal-delay:120ms; --ev-accent:${ls.accent}`} aria-label={`${latest.season} ${latest.year} event`}>
-        <img src={`/flyers/${latest.flyer}.jpg`} alt={`${latest.season} ${latest.year} event flyer`} width="971" height="1600" />
-      </a>
     </div>
   </section>
 
@@ -39,6 +40,23 @@ const years = latest.year - site.founded;
       <p class="reveal home-draw__links" style="--reveal-delay:220ms"><a class="link-chevron" href="/draw/">See the giving history</a></p>
     </div>
   </section>
+
+  {videos.length > 0 && (
+    <section class="section container home-videos">
+      <div class="home-head">
+        <h2 class="t-headline reveal">Watch the nights</h2>
+        <a class="link-chevron reveal" href={site.youtube} rel="noopener" target="_blank">YouTube channel</a>
+      </div>
+      <div class:list={['home-videos__grid', { 'is-pair': videos.length > 1 }]}>
+        {videos.map((v, i) => (
+          <figure class="home-video reveal" style={`--reveal-delay:${i * 80}ms`}>
+            <YouTube id={v.video!} title={`The Top End Club, ${v.season} ${v.year}`} />
+            <figcaption><a href={`/events/${v.id}/`} class="t-body t-semibold home-video__ev">{v.season} {v.year}</a> <span class="t-secondary">· {v.name}</span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )}
 
   <section class="section container">
     <div class="home-head">
@@ -69,20 +87,21 @@ const years = latest.year - site.founded;
 </Base>
 
 <style>
-  .hero { padding-block: clamp(48px, 8vw, 112px) clamp(56px, 8vw, 120px); overflow: hidden; }
-  .hero__inner { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(32px, 6vw, 88px); align-items: center; }
-  .hero__text { display: grid; gap: var(--space-5); }
-  .hero__title { font-size: clamp(56px, 9vw, 120px); }
-  .hero__intro { max-width: 520px; }
+  .hero { position: relative; overflow: hidden; min-height: min(80vh, 760px); display: grid; align-items: center; padding-block: clamp(48px, 8vw, 112px); }
+  .hero__inner { position: relative; z-index: 1; }
+  .hero__text { display: grid; gap: var(--space-5); max-width: 520px; }
+  .hero__title { font-size: clamp(56px, 7vw, 108px); }
+  .hero__intro { max-width: 480px; }
   .hero__links { display: flex; align-items: center; gap: var(--space-6); flex-wrap: wrap; margin-top: var(--space-2); }
-  .hero__flyer { display: block; justify-self: center; max-width: 380px; }
-  .hero__flyer img {
-    border-radius: var(--radius-lg);
-    box-shadow: 0 30px 60px -20px color-mix(in srgb, var(--ev-accent) 45%, transparent), var(--shadow-lg);
-    transform: rotate(2deg);
-    transition: transform var(--dur-emph) var(--ease-out);
+  /* The photos sit on the right and melt into the page on their left and bottom edges. */
+  .hero :global(.hero__photos) {
+    position: absolute; inset: 0 0 0 auto; width: 60%;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 28%, #000 62%), linear-gradient(to top, transparent 0%, #000 22%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 28%, #000 62%), linear-gradient(to top, transparent 0%, #000 22%);
+    mask-composite: intersect;
+    --rot-caption-bottom: 26%;
   }
-  .hero__flyer:hover img { transform: rotate(0deg) translateY(-6px); }
 
   .home-draw { padding-block: clamp(72px, 10vw, 128px); }
   .home-draw .stat__label { max-width: 520px; margin-inline: auto; }
@@ -90,12 +109,24 @@ const years = latest.year - site.founded;
 
   .home-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .home-grid { margin-top: var(--space-8); }
+  .home-videos { padding-bottom: 0; }
+  .home-videos__grid { display: grid; gap: var(--space-6); margin-top: var(--space-8); }
+  .home-videos__grid.is-pair { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
+  .home-video { margin: 0; display: grid; gap: 14px; }
+  .home-video__ev { color: var(--text); }
 
   .home-club { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: var(--space-5); }
   .home-club__tile { display: grid; gap: var(--space-4); align-content: start; background: var(--elevated); border: 1px solid var(--card-border); }
 
   @media (max-width: 833px) {
-    .hero__inner { grid-template-columns: 1fr; }
-    .hero__flyer { max-width: 260px; justify-self: start; }
+    .hero { min-height: 0; display: block; padding-top: 0; }
+    .hero :global(.hero__photos) {
+      position: relative; inset: auto; width: 100%; height: clamp(300px, 86vw, 520px);
+      -webkit-mask-image: linear-gradient(to top, transparent 0%, #000 38%);
+      mask-image: linear-gradient(to top, transparent 0%, #000 38%);
+    }
+    .hero :global(.rot__caption) { display: none; }
+
+    .hero__inner { margin-top: -20px; }
   }
 </style>

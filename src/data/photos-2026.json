@@ -1,0 +1,107 @@
+[
+  {
+    "key": "leaders",
+    "alt": "The Top End Club leaders in their club shirts, arms crossed",
+    "focus": "50% 30%",
+    "w": 1920,
+    "h": 1440
+  },
+  {
+    "key": "check",
+    "alt": "Club members hold the $11,592 check for D.R.A.W. under the D.R.A.W. tent",
+    "focus": "50% 45%",
+    "w": 1920,
+    "h": 1080
+  },
+  {
+    "key": "check-2",
+    "alt": "The club presents its $11,592 check to D.R.A.W.",
+    "focus": "55% 45%",
+    "w": 1920,
+    "h": 1080
+  },
+  {
+    "key": "crowd-dusk",
+    "alt": "A full house at dinner under the club tents at dusk",
+    "focus": "50% 60%",
+    "w": 1920,
+    "h": 1440
+  },
+  {
+    "key": "crowd",
+    "alt": "Racers and friends share dinner under the club tents",
+    "focus": "50% 60%",
+    "w": 1920,
+    "h": 1440
+  },
+  {
+    "key": "guitar",
+    "alt": "A guest shows off a red electric guitar from the benefit auction",
+    "focus": "45% 40%",
+    "w": 1920,
+    "h": 1440
+  },
+  {
+    "key": "guitar-2",
+    "alt": "A red electric guitar from the benefit auction",
+    "focus": "45% 40%",
+    "w": 1920,
+    "h": 1440
+  },
+  {
+    "key": "serving",
+    "alt": "Club members serve barbecue down the buffet line",
+    "focus": "55% 50%",
+    "w": 1920,
+    "h": 1440
+  },
+  {
+    "key": "laughs",
+    "alt": "Guests laugh at the table as plates come around",
+    "focus": "55% 50%",
+    "w": 1920,
+    "h": 1440
+  },
+  {
+    "key": "friends",
+    "alt": "Friends at a table in the club tent",
+    "focus": "50% 55%",
+    "w": 1920,
+    "h": 1440
+  },
+  {
+    "key": "banner",
+    "alt": "The Top End Club sponsor banner at zMAX Dragway",
+    "focus": "40% 65%",
+    "w": 1920,
+    "h": 1440
+  },
+  {
+    "key": "prayer",
+    "alt": "The club bows heads for a prayer before dinner",
+    "focus": "50% 40%",
+    "w": 1920,
+    "h": 1081
+  },
+  {
+    "key": "auction",
+    "alt": "Auction jackets on the rack as bidders gather",
+    "focus": "50% 40%",
+    "w": 1920,
+    "h": 1440
+  },
+  {
+    "key": "auction-crowd",
+    "alt": "Bidders gather for the live auction after dinner",
+    "focus": "50% 40%",
+    "w": 1920,
+    "h": 1440
+  },
+  {
+    "key": "night",
+    "alt": "Guests mingle in the pits as night falls",
+    "focus": "45% 45%",
+    "w": 1920,
+    "h": 1440
+  }
+]

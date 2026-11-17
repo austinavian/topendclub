@@ -53,7 +53,8 @@ const fullTitle = title ? `${title} · ${site.name}` : site.name;
     <TabBar />
     <script>
       import { initMotion } from '../scripts/motion';
-      document.addEventListener('astro:page-load', initMotion);
+      import { initRotators } from '../scripts/rotator';
+      document.addEventListener('astro:page-load', () => { initMotion(); initRotators(); });
     </script>
   </body>
 </html>

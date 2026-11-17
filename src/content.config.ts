@@ -16,6 +16,7 @@ const events = defineCollection({
     totalAfter: z.number().optional(),      // all-time D.R.A.W. total after this event
     flyer: z.string().optional(),
     private: z.boolean().optional(),
+    video: z.string().optional(),           // YouTube video id
   }),
 });
 

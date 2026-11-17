@@ -4,7 +4,8 @@ import PageHeader from '../../components/PageHeader.astro';
 import { getCollection } from 'astro:content';
 import site from '../../data/site.json';
 
-const events = (await getCollection('events')).map((e) => e.data).sort((a, b) => +a.date - +b.date);
+const events = (await getCollection('events')).map((e) => ({ ...e.data, id: e.id })).sort((a, b) => +a.date - +b.date);
+const compact = (n: number) => `$${(n / 1000).toFixed(1).replace(/\.0$/, '')}K`;
 const giving = events.filter((e) => e.year >= 2016);
 const known = giving.filter((e) => e.raised);
 const usd = (n: number) => '$' + n.toLocaleString('en-US');
@@ -18,11 +19,11 @@ const best = known.reduce((a, b) => (b.raised! > a.raised! ? b : a));
 const latest = known[known.length - 1];
 
 const milestones = [
-  { year: '2016', title: 'First gift', body: `${usd(1460)} at the Mark Lyle & Ronnie Davis Memorial Barbeque, the club's first night giving to D.R.A.W.` },
-  { year: '2016', title: 'Organization of the Year', body: 'D.R.A.W. named the Top End Club its 2016 Organization of the Year.' },
-  { year: '2021', title: 'Passed $20,000', body: 'The fall 2021 event brought the total to $20,005.' },
-  { year: '2024', title: 'Passed $50,000', body: 'The fall 2024 event, given in memory of Rosalee Noble, brought the total to $50,763.' },
-  { year: '2026', title: 'Passed $100,000', body: `The spring 2026 event brought the total to ${usd(site.draw.total)}.` },
+  { year: '2016', id: '2016-spring', title: 'First gift', body: `${usd(1460)} at the Mark Lyle & Ronnie Davis Memorial Barbecue, the club's first night giving to D.R.A.W.` },
+  { year: '2016', id: '2016-fall', title: 'Organization of the Year', body: 'D.R.A.W. named the Top End Club its 2016 Organization of the Year.' },
+  { year: '2021', id: '2021-fall', title: 'Passed $20,000', body: 'The fall 2021 event brought the total to $20,005.' },
+  { year: '2024', id: '2024-fall', title: 'Passed $50,000', body: 'The fall 2024 event, given in memory of Rosalee Noble, brought the total to $50,763.' },
+  { year: '2026', id: '2026-spring', title: 'Passed $100,000', body: `The spring 2026 event brought the total to ${usd(site.draw.total)}.` },
 ];
 
 const lastYear = giving[giving.length - 1].year;
@@ -32,17 +33,22 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
   <PageHeader eyebrow="Giving back" title="D.R.A.W." intro="Every event since 2016 has raised money for D.R.A.W., the Drag Racing Association of Women. It helps drag racing crew members and their families when injury or illness keeps them off the track." />
 
   <section class="section--dark draw-hero">
-    <div class="container t-center stat">
-      <p class="t-eyebrow reveal">Given to D.R.A.W. since {site.draw.since}</p>
-      <p class="stat__value reveal reveal--scale" style="--reveal-delay:80ms" data-count={site.draw.total}>{usd(site.draw.total)}</p>
-      <p class="stat__label reveal" style="--reveal-delay:160ms">Total to date, as of the {site.draw.asOf}.</p>
-      <p class="reveal draw-hero__link" style="--reveal-delay:220ms"><a class="link-chevron" href={site.draw.url} rel="noopener" target="_blank">About D.R.A.W.</a></p>
+    <div class="container t-center stat draw-hero__inner">
+      <p class="t-eyebrow draw-hero__eyebrow reveal">Given to D.R.A.W. since {site.draw.since}</p>
+      <p class="stat__value draw-hero__value reveal reveal--scale" style="--reveal-delay:80ms">{usd(site.draw.total)}</p>
+      <p class="draw-hero__asof reveal" style="--reveal-delay:140ms">Total to date, as of the <a href={`/events/${site.draw.asOfEvent}/`}>{site.draw.asOf}</a>.</p>
+      <dl class="draw-hero__stats reveal" style="--reveal-delay:200ms">
+        <div><dt>Benefit nights</dt><dd class="t-tabular">{giving.length}</dd></div>
+        <div><dt>Best night</dt><dd class="t-tabular"><a href={`/events/${best.id}/`}>{compact(best.raised!)}<span>{best.season} {best.year}</span></a></dd></div>
+        <div><dt>Latest night</dt><dd class="t-tabular"><a href={`/events/${latest.id}/`}>{compact(latest.raised!)}<span>{latest.season} {latest.year}</span></a></dd></div>
+      </dl>
+      <p class="reveal draw-hero__link" style="--reveal-delay:260ms"><a class="link-chevron" href={site.draw.url} rel="noopener" target="_blank">About D.R.A.W.</a></p>
     </div>
   </section>
 
   <section class="section container" id="chart">
     <h2 class="t-headline reveal">Raised at each event</h2>
-    <p class="t-body-large t-secondary draw-lead reveal">The {best.season.toLowerCase()} {best.year} event raised the most so far. Events with no recorded amount are left out.</p>
+    <p class="t-body-large t-secondary draw-lead reveal">The <a href={`/events/${best.id}/`}>{best.season.toLowerCase()} {best.year} event</a> raised the most so far. Events with no recorded amount are left out.</p>
 
     <figure class="chart reveal" aria-label="Column chart of the amount raised at each event since 2016">
       <div class="chart__plot">
@@ -81,12 +87,12 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
       <h2 class="t-headline reveal">Milestones</h2>
       <ol class="milestones" role="list">
         {milestones.map((m, i) => (
-          <li class="card milestone reveal" style={`--reveal-delay:${i * 60}ms`}>
-            <div class="card__body">
+          <li class="milestone reveal" style={`--reveal-delay:${i * 60}ms`}>
+            <a class="card card__body" href={`/events/${m.id}/`}>
               <p class="t-eyebrow">{m.year}</p>
               <h3 class="t-title-3">{m.title}</h3>
               <p class="t-callout t-secondary">{m.body}</p>
-            </div>
+            </a>
           </li>
         ))}
       </ol>
@@ -107,7 +113,7 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
               {giving.filter((e) => e.year === y).map((e) => (
                 <li class="history__row">
                   <div>
-                    <p class="t-body t-medium">{e.season}{e.private ? ' · Private event' : ''}</p>
+                    <a class="history__ev t-body t-medium" href={`/events/${e.id}/`}>{e.season}<svg class="history__chev" viewBox="0 0 8 14" width="7" height="12" aria-hidden="true"><path d="M1.5 1.5 6.5 7l-5 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
                     <p class="t-caption t-secondary">{fmtDate(e.date)}</p>
                   </div>
                   <div class="history__num">
@@ -125,8 +131,29 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
 </Base>
 
 <style>
-  .draw-hero { padding-block: clamp(72px, 10vw, 128px); }
-  .draw-hero__link { margin-top: var(--space-6); }
+  .draw-hero {
+    position: relative; overflow: hidden; padding-block: clamp(80px, 11vw, 140px);
+    background: radial-gradient(70% 90% at 50% 105%, rgba(229, 72, 61, 0.34), transparent 70%), #000;
+  }
+  .draw-hero__inner { display: grid; justify-items: center; }
+  .draw-hero__eyebrow { color: #ff6b5e; }
+  .draw-hero__value { margin-top: 14px; font-size: clamp(64px, 12vw, 152px); letter-spacing: -0.035em; }
+  .draw-hero__asof { margin-top: 18px; font-size: clamp(17px, 1.6vw, 21px); color: rgba(255, 255, 255, 0.72); }
+  .draw-hero__asof a { color: #fff; }
+  .draw-hero__stats {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(640px, 100%);
+    margin: clamp(36px, 5vw, 56px) 0 0; padding-top: 28px; border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+  .draw-hero__stats > div { display: grid; gap: 6px; padding-inline: 12px; align-content: start; }
+  .draw-hero__stats > div + div { border-left: 1px solid rgba(255, 255, 255, 0.16); }
+  .draw-hero__stats dt { font-size: 13px; color: rgba(255, 255, 255, 0.6); }
+  .draw-hero__stats dd { margin: 0; font-size: clamp(26px, 3vw, 36px); font-weight: 600; letter-spacing: -0.01em; line-height: 1.1; color: #fff; }
+  .draw-hero__stats dd a { color: #fff; display: grid; gap: 4px; }
+  .draw-hero__stats dd span { font-size: 13px; font-weight: 400; letter-spacing: 0; color: rgba(255, 255, 255, 0.6); }
+  .draw-hero__stats dd a:hover { text-decoration: none; }
+  .draw-hero__stats dd a:hover span { color: #fff; }
+  .draw-hero__link { margin-top: clamp(28px, 4vw, 40px); }
+  .draw-hero__link a { color: #ff6b5e; }
   .draw-lead { margin-top: var(--space-4); max-width: 680px; }
 
   /* Column chart: one series, so no legend; the heading names it. */
@@ -164,7 +191,8 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
   @keyframes grow { from { transform: scaleY(0); } }
 
   .milestones { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: var(--space-5); margin-top: var(--space-8); padding: 0; }
-  .milestone .card__body { display: grid; gap: 6px; padding: 24px 24px 28px; }
+  .milestone { display: flex; }
+  .milestone .card__body { display: grid; gap: 6px; align-content: start; padding: 24px 24px 28px; width: 100%; }
 
   .history { margin-top: var(--space-8); }
   .history__year { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding-block: 24px; border-top: 1px solid var(--separator); }
@@ -173,8 +201,13 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
   .history__row { display: flex; justify-content: space-between; gap: 16px; padding-block: 6px; }
   .history__row + .history__row { margin-top: 10px; }
   .history__num { text-align: right; }
+  .history__ev { display: inline-flex; align-items: center; gap: 7px; color: inherit; text-decoration: none; }
+  .history__ev:hover { text-decoration: none; }
+  .history__chev { color: var(--text-3); opacity: 0.7; transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease); }
+  .history__ev:hover .history__chev { transform: translateX(2px); opacity: 1; }
   .history__note { padding-top: 6px; }
   @media (max-width: 600px) {
+    .draw-hero__stats > div { padding-inline: 6px; }
     .history__year { grid-template-columns: 1fr; gap: 8px; }
     .chart__plot { margin-left: 36px; }
   }

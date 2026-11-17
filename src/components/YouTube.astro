@@ -1,0 +1,56 @@
+---
+// A YouTube video that loads only when played: a poster and play button first,
+// then the privacy-enhanced player (youtube-nocookie.com) on click.
+interface Props { id: string; title: string; class?: string }
+const { id, title, class: cls } = Astro.props;
+---
+<div class:list={['yt', cls]} data-yt={id} data-title={title}>
+  <img class="yt__poster" src={`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`} alt="" loading="lazy" decoding="async"
+       onerror={`this.onerror=null;this.src='https://i.ytimg.com/vi/${id}/hqdefault.jpg'`} />
+  <button class="yt__play" type="button" aria-label={`Play video: ${title}`}>
+    <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg>
+  </button>
+  <a class="yt__link" href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener">Watch on YouTube</a>
+</div>
+
+<style>
+  .yt {
+    position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-lg);
+    background: #000; box-shadow: var(--shadow-lg); isolation: isolate;
+  }
+  .yt__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-emph) var(--ease-out), filter var(--dur) var(--ease); }
+  .yt::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.45)); pointer-events: none; }
+  .yt:hover .yt__poster { transform: scale(1.02); }
+  .yt__play {
+    position: absolute; inset: 0; margin: auto; z-index: 1; width: 76px; height: 76px; border-radius: 50%;
+    display: grid; place-items: center; border: 0; cursor: pointer; color: #fff;
+    background: rgba(20, 20, 20, 0.45); -webkit-backdrop-filter: blur(12px) saturate(1.6); backdrop-filter: blur(12px) saturate(1.6);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+    transition: transform var(--dur) var(--ease-out), background var(--dur) var(--ease);
+  }
+  .yt__play svg { margin-left: 3px; }
+  .yt:hover .yt__play { transform: scale(1.06); background: var(--accent); }
+  .yt__play:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .yt__link { position: absolute; z-index: 1; right: 16px; bottom: 12px; font-size: 13px; color: rgba(255, 255, 255, 0.9); }
+  .yt__link:hover { color: #fff; }
+  .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; z-index: 2; }
+</style>
+
+<script>
+  function initYouTube() {
+    document.querySelectorAll<HTMLElement>('[data-yt]:not([data-ready])').forEach((el) => {
+      el.dataset.ready = '';
+      el.querySelector('.yt__play')?.addEventListener('click', () => {
+        const f = document.createElement('iframe');
+        f.src = `https://www.youtube-nocookie.com/embed/${el.dataset.yt}?autoplay=1&rel=0&playsinline=1`;
+        f.title = el.dataset.title ?? 'YouTube video';
+        f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        f.allowFullscreen = true;
+        f.referrerPolicy = 'strict-origin-when-cross-origin';
+        el.append(f);
+        f.focus();
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', initYouTube);
+</script>

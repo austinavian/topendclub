@@ -24,3 +24,10 @@ export const longDate = (d: Date) =>
 export const shortDate = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 export const raisedText = (e: Ev) => (e.raised ? `${e.raisedIsEstimate ? 'About ' : ''}${usd(e.raised)}` : null);
+
+/** Rounded for tiles and cards: 3510 -> "$3.5K", 29350 -> "$29.4K". */
+export const compactUsd = (n: number) =>
+  n >= 1000 ? `$${(n / 1000).toFixed(1).replace(/\.0$/, '')}K` : usd(n);
+
+/** Key for the generated artwork in public/events/art (2021 events have art but no flyer). */
+export const artKey = (e: Ev) => e.flyer ?? `${e.year}_${e.season === 'Spring' ? 1 : 2}`;

@@ -64,11 +64,11 @@ button { font: inherit; color: inherit; }
 .t-title-1   { font-size: clamp(28px, 3.2vw, 40px); line-height: 1.1;   font-weight: 600; letter-spacing: 0em; }
 .t-title-2   { font-size: clamp(24px, 2.6vw, 32px); line-height: 1.125; font-weight: 600; letter-spacing: 0.004em; }
 .t-title-3   { font-size: clamp(21px, 2vw, 24px);   line-height: 1.1667; font-weight: 600; letter-spacing: 0.009em; }
-.t-body-large{ font-size: clamp(19px, 1.7vw, 21px); line-height: 1.381; font-weight: 400; letter-spacing: 0.011em; }
+.t-body-large{ font-size: clamp(19px, 1.85vw, 24px); line-height: 1.381; font-weight: 400; letter-spacing: 0.011em; }
 .t-body      { font-size: 17px; line-height: 1.4706; font-weight: 400; letter-spacing: -0.022em; }
 .t-callout   { font-size: 14px; line-height: 1.4286; font-weight: 400; letter-spacing: -0.016em; }
 .t-caption   { font-size: 12px; line-height: 1.3334; font-weight: 400; letter-spacing: -0.01em; }
-.t-eyebrow   { font-size: 14px; line-height: 1.2857; font-weight: 600; letter-spacing: -0.016em; color: var(--accent); }
+.t-eyebrow   { font-size: clamp(14px, 1.35vw, 19px); line-height: 1.25; font-weight: 600; letter-spacing: -0.016em; color: var(--accent); }
 
 .t-secondary { color: var(--text-2); }
 .t-tertiary  { color: var(--text-3); }
@@ -203,7 +203,7 @@ a.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
 /* Big number, used for the D.R.A.W. total */
 .stat { font-variation-settings: "opsz" var(--opsz-display); font-variant-numeric: tabular-nums; }
 .stat__value { font-size: clamp(56px, 9vw, 120px); line-height: 1; font-weight: 700; letter-spacing: -0.02em; }
-.stat__label { margin-top: var(--space-3); font-size: 17px; color: var(--text-2); }
+.stat__label { margin-top: var(--space-3); font-size: clamp(17px, 1.6vw, 21px); color: var(--text-2); }
 
 /* --------------------------------------------------------------------------
    Motion. Content rises 24px and fades in as it enters the viewport, once.
@@ -242,4 +242,12 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 /* Leave room for the mobile tab bar */
 @media (max-width: 833px) {
   body { padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom)); }
+  /* What Safari shows under its own toolbar and past the page edge: the tab bar's colour,
+     so the browser chrome and the site's bar read as one surface. */
+  html { background: var(--chrome); }
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }

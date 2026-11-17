@@ -35,7 +35,7 @@ const isActive = (href: string) => href !== '/' && path.startsWith(href);
   .gnav.is-scrolled { border-bottom-color: var(--glass-border); }
 
   .gnav__inner {
-    width: min(1024px, 100% - var(--gutter) * 2);
+    width: min(var(--content), 100% - var(--gutter) * 2);
     height: 100%;
     margin-inline: auto;
     display: flex;
@@ -48,28 +48,32 @@ const isActive = (href: string) => href !== '/' && path.startsWith(href);
   .gnav__home:hover { opacity: 1; }
   .gnav__icon {
     display: block;
-    width: 34px;
-    height: 20px;
+    width: 52px;
+    height: 30px;
     background: var(--text);
     -webkit-mask: url('/brand/TEC_ICON_BLACK.svg') center / contain no-repeat;
     mask: url('/brand/TEC_ICON_BLACK.svg') center / contain no-repeat;
   }
 
-  .gnav__list { display: flex; align-items: center; justify-content: space-between; flex: 1; max-width: 760px; margin: 0; }
+  .gnav__list { display: flex; align-items: center; justify-content: space-between; flex: 1; max-width: 820px; margin: 0; }
+  /* Charlotte Italic, set small and open so it sits level with the icon */
   .gnav__link {
     display: block;
-    padding: 0 8px;
-    font-size: 12px;
-    line-height: var(--nav-h);
-    letter-spacing: -0.01em;
+    padding: 0 10px;
+    font-family: var(--font-display);
+    font-style: italic;
     font-weight: 400;
+    text-transform: uppercase;
+    font-size: 15px;
+    line-height: var(--nav-h);
+    letter-spacing: 0.06em;
     color: var(--text);
-    opacity: 0.8;
+    opacity: 0.72;
     text-decoration: none;
     transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
   }
   .gnav__link:hover { opacity: 1; text-decoration: none; }
-  .gnav__link.is-active { opacity: 1; font-weight: 600; }
+  .gnav__link.is-active { opacity: 1; color: var(--accent); }
 
   /* On phones the bottom tab bar takes over, as in the concept mockup */
   @media (max-width: 833px) {
