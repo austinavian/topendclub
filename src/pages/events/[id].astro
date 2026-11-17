@@ -92,7 +92,7 @@ const flyerName = `Top-End-Club-${e.season}-${e.year}-flyer.jpg`;
   {e.video && (
     <section class="section--tight container ev-video">
       <h2 class="t-headline reveal">Watch the night</h2>
-      <YouTube id={e.video} title={`The Top End Club, ${title}`} class="reveal ev-video__player" />
+      <YouTube id={e.video} title={`The Top End Club, ${title}`} poster={`/videos/${e.id}-event-video`} class="reveal ev-video__player" />
     </section>
   )}
 

@@ -1,12 +1,23 @@
 ---
 // A YouTube video that loads only when played: a poster and play button first,
 // then the privacy-enhanced player (youtube-nocookie.com) on click.
-interface Props { id: string; title: string; class?: string }
-const { id, title, class: cls } = Astro.props;
+// `poster` is the base path of the club's own thumbnail in public/ (path.webp, path-sm.webp, path.jpg);
+// without one, YouTube's thumbnail is used.
+interface Props { id: string; title: string; poster?: string; class?: string }
+import { existsSync } from 'node:fs';
+const { id, title, poster: p, class: cls } = Astro.props;
+const poster = p && existsSync(`public${p}.jpg`) ? p : undefined;
 ---
 <div class:list={['yt', cls]} data-yt={id} data-title={title}>
-  <img class="yt__poster" src={`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`} alt="" loading="lazy" decoding="async"
-       onerror={`this.onerror=null;this.src='https://i.ytimg.com/vi/${id}/hqdefault.jpg'`} />
+  {poster ? (
+    <picture>
+      <source type="image/webp" srcset={`${poster}-sm.webp 960w, ${poster}.webp 1920w`} sizes="(max-width: 833px) 100vw, 980px" />
+      <img class="yt__poster" src={`${poster}.jpg`} alt="" loading="lazy" decoding="async" width="1280" height="720" />
+    </picture>
+  ) : (
+    <img class="yt__poster" src={`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`} alt="" loading="lazy" decoding="async"
+         onerror={`this.onerror=null;this.src='https://i.ytimg.com/vi/${id}/hqdefault.jpg'`} />
+  )}
   <button class="yt__play" type="button" aria-label={`Play video: ${title}`}>
     <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg>
   </button>

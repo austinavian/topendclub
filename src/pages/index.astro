@@ -50,7 +50,7 @@ const videos = [latest, ...recent].filter((e) => e.video);
       <div class:list={['home-videos__grid', { 'is-pair': videos.length > 1 }]}>
         {videos.map((v, i) => (
           <figure class="home-video reveal" style={`--reveal-delay:${i * 80}ms`}>
-            <YouTube id={v.video!} title={`The Top End Club, ${v.season} ${v.year}`} />
+            <YouTube id={v.video!} title={`The Top End Club, ${v.season} ${v.year}`} poster={`/videos/${v.id}-event-video`} />
             <figcaption><a href={`/events/${v.id}/`} class="t-body t-semibold home-video__ev">{v.season} {v.year}</a> <span class="t-secondary">· {v.name}</span></figcaption>
           </figure>
         ))}
