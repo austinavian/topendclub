@@ -9,15 +9,16 @@ interface Props {
   interval?: number;       // ms between photos
   sizes?: string;
   caption?: boolean;       // show the photo's description in the corner
+  label?: string;          // what the slideshow is, for screen readers
   class?: string;
 }
-const { keys, interval = 6500, sizes = '100vw', caption = false, class: cls } = Astro.props;
+const { keys, interval = 6500, sizes = '100vw', caption = false, label = 'Photos from the Top End Club', class: cls } = Astro.props;
 const list = (keys ? keys.map((k) => photos.find((p) => p.key === k)!).filter(Boolean) : photos)
   .slice().sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
 const base = '/photos/2026/';
 const set = (k: string) => `${base}${k}-sm.webp 960w, ${base}${k}.webp 1920w`;
 ---
-<div class:list={['rot', cls]} data-rotator data-interval={interval} aria-roledescription="slideshow">
+<div class:list={['rot', cls]} data-rotator data-interval={interval} role="group" aria-roledescription="slideshow" aria-label={label}>
   {list.map((p, i) => (
     <picture class="rot__slide" data-alt={p.alt} data-featured={p.featured ? '' : undefined} aria-hidden="true">
       <source type="image/webp" data-srcset={set(p.key)} sizes={sizes} />

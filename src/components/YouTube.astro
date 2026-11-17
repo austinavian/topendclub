@@ -3,15 +3,15 @@
 // then the privacy-enhanced player (youtube-nocookie.com) on click.
 // `poster` is the base path of the club's own thumbnail in public/ (path.webp, path-sm.webp, path.jpg);
 // without one, YouTube's thumbnail is used.
-interface Props { id: string; title: string; poster?: string; class?: string }
+interface Props { id: string; title: string; poster?: string; sizes?: string; class?: string }
 import { existsSync } from 'node:fs';
-const { id, title, poster: p, class: cls } = Astro.props;
+const { id, title, poster: p, sizes = '(max-width: 833px) 100vw, 980px', class: cls } = Astro.props;
 const poster = p && existsSync(`public${p}.jpg`) ? p : undefined;
 ---
 <div class:list={['yt', cls]} data-yt={id} data-title={title}>
   {poster ? (
     <picture>
-      <source type="image/webp" srcset={`${poster}-sm.webp 960w, ${poster}.webp 1920w`} sizes="(max-width: 833px) 100vw, 980px" />
+      <source type="image/webp" srcset={`${poster}-sm.webp 960w, ${poster}.webp 1920w`} sizes={sizes} />
       <img class="yt__poster" src={`${poster}.jpg`} alt="" loading="lazy" decoding="async" width="1280" height="720" />
     </picture>
   ) : (

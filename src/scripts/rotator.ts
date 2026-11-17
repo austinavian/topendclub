@@ -11,10 +11,11 @@ function shuffle<T>(a: T[]): T[] {
   return a;
 }
 
-function load(slide: HTMLElement): Promise<void> {
+function load(slide: HTMLElement, first = false): Promise<void> {
   const img = slide.querySelector('img')!;
   const src = slide.querySelector('source');
   if (!img.getAttribute('src')) {
+    if (first) img.fetchPriority = 'high'; // the opening photo is the largest thing on screen
     if (src?.dataset.srcset) src.srcset = src.dataset.srcset;
     img.src = img.dataset.src!;
   }
@@ -68,8 +69,8 @@ export function initRotators() {
     root.style.setProperty('--rot-dur', `${every + 1500}ms`);
     let busy = false;
 
-    const show = (s: HTMLElement) =>
-      load(s).then(() => {
+    const show = (s: HTMLElement, first = false) =>
+      load(s, first).then(() => {
         slides.forEach((x) => x.classList.toggle('is-active', x === s));
         const alt = s.dataset.alt ?? '';
         label?.setAttribute('aria-label', alt);
@@ -80,7 +81,7 @@ export function initRotators() {
         load(list.peek()); // warm up the next photo
       });
 
-    show(list.next());
+    show(list.next(), true);
     if (still || slides.length < 2) return;
     timers.push(window.setInterval(() => {
       if (document.hidden || busy) return;

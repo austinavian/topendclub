@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import { getCollection } from 'astro:content';
-import { allEvents, shortDate, artKey, compactUsd, type Ev } from '../../lib/events';
+import { allEvents, shortDate, isoDate, artKey, compactUsd, type Ev } from '../../lib/events';
 import { coverFor } from '../../lib/news';
 
 const events = await allEvents();
@@ -25,7 +25,7 @@ const leadCover = coverFor(lead.id, lead.ev);
         <img src={leadCover.src} alt="" width="1200" height="900" fetchpriority="high" decoding="async" style={leadCover.focus ? `object-position:${leadCover.focus}` : undefined} />
       </picture>
       <div class="nw-lead__text">
-        <p class="t-eyebrow">Latest · <time datetime={lead.date.toISOString().slice(0, 10)}>{shortDate(lead.date)}</time></p>
+        <p class="t-eyebrow">Latest · <time datetime={isoDate(lead.date)}>{shortDate(lead.date)}</time></p>
         <h2 class="t-title-1">{lead.title}</h2>
         {lead.summary && <p class="t-body-large t-secondary">{lead.summary}</p>}
         <span class="link-chevron">Read the story</span>
@@ -45,7 +45,7 @@ const leadCover = coverFor(lead.id, lead.ev);
               <a class="nw-item card" href={`/news/${p.id}/`}>
                 {p.ev && <img class="nw-item__thumb" src={`/events/art/${artKey(p.ev)}-thumb-sm.webp`} alt="" width="600" height="450" loading="lazy" decoding="async" />}
                 <div class="nw-item__text">
-                  <p class="t-caption t-tertiary"><time datetime={p.date.toISOString().slice(0, 10)}>{shortDate(p.date)}</time>{p.ev?.raised && <> · {compactUsd(p.ev.raised)} raised</>}</p>
+                  <p class="t-caption t-tertiary"><time datetime={isoDate(p.date)}>{shortDate(p.date)}</time>{p.ev?.raised && <> · {compactUsd(p.ev.raised)} raised</>}</p>
                   <h4 class="t-title-3">{p.title}</h4>
                   {p.summary && <p class="t-callout t-secondary">{p.summary}</p>}
                 </div>
@@ -65,7 +65,7 @@ const leadCover = coverFor(lead.id, lead.ev);
           {club.map((p, i) => (
             <li class="reveal" style={`--reveal-delay:${i * 60}ms`}>
               <a class="nw-club__item card" href={`/news/${p.id}/`}>
-                <p class="t-caption t-tertiary"><time datetime={p.date.toISOString().slice(0, 10)}>{shortDate(p.date)}</time></p>
+                <p class="t-caption t-tertiary"><time datetime={isoDate(p.date)}>{shortDate(p.date)}</time></p>
                 <h3 class="t-title-3">{p.title}</h3>
                 {p.summary && <p class="t-callout t-secondary">{p.summary}</p>}
                 <span class="link-chevron">Read</span>

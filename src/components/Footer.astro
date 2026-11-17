@@ -97,10 +97,19 @@ const columns = [
 <script>
   // Columns are open on desktop and collapse into accordions on phones.
   const mq = window.matchMedia('(max-width: 833px)');
-  const sync = () => document.querySelectorAll<HTMLDetailsElement>('.footer__col').forEach((d) => (d.open = !mq.matches));
+  const sync = () => document.querySelectorAll<HTMLDetailsElement>('.footer__col').forEach((d) => {
+    d.open = !mq.matches;
+    // On desktop the headings are plain labels, so keep them out of the tab order.
+    const title = d.querySelector<HTMLElement>('summary');
+    if (mq.matches) title?.removeAttribute('tabindex'); else title?.setAttribute('tabindex', '-1');
+  });
   sync();
   mq.addEventListener('change', sync);
   document.addEventListener('astro:page-load', sync);
+  // A click on a heading should only fold the column on phones.
+  document.addEventListener('click', (e) => {
+    if (!mq.matches && (e.target as Element).closest?.('.footer__col-title')) e.preventDefault();
+  });
 </script>
 
 <style>
