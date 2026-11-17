@@ -25,7 +25,7 @@ const rules = [
   <PageHeader eyebrow="Brand kit" title="Branding" intro="Logos, colors and type for the Top End Club. Everything here is free to use for club events, sponsors and press.">
     <p class="bk-dl reveal" style="--reveal-delay:200ms">
       <a class="button" href="/brand/Top-End-Club-Logos.zip" download>Download all logos</a>
-      <span class="t-caption t-tertiary">SVG and PNG, 2.3 MB</span>
+      <span class="t-caption t-tertiary">Full color and flat, PNG and SVG, 24 MB</span>
     </p>
   </PageHeader>
 
@@ -35,6 +35,7 @@ const rules = [
 
   <section class="section container" id="logos">
     <h2 class="t-headline reveal">Logos</h2>
+    <p class="t-body-large t-secondary bk-lead reveal">The full-color logos come as high-resolution PNGs. The flat logos come as SVG and PNG.</p>
     {groups.map((g) => (
       <div class="bk-group">
         <div class="bk-group__head reveal">
@@ -45,12 +46,12 @@ const rules = [
           {g.items.map((it, i) => (
             <li class="bk-logo card reveal" style={`--reveal-delay:${(i % 3) * 60}ms`}>
               <div class:list={['bk-logo__stage', `is-${it.bg}`]}>
-                <img src={`/brand/${it.file}.svg`} alt={`Top End Club ${g.title.toLowerCase()}, ${it.label.toLowerCase()}`} loading="lazy" decoding="async" />
+                <img src={it.svg === false ? `/brand/preview/${it.file}.webp` : `/brand/${it.file}.svg`} alt={`Top End Club ${g.title.toLowerCase()}, ${it.label.toLowerCase()}`} loading="lazy" decoding="async" />
               </div>
               <div class="bk-logo__foot">
                 <p class="t-callout t-medium">{it.label}</p>
                 <p class="bk-logo__links">
-                  <a href={`/brand/${it.file}.svg`} download={`${it.name}.svg`}>SVG</a>
+                  {it.svg !== false && <a href={`/brand/${it.file}.svg`} download={`${it.name}.svg`}>SVG</a>}
                   <a href={`/brand/png/${it.file}.png`} download={`${it.name}.png`}>PNG</a>
                 </p>
               </div>
@@ -162,14 +163,17 @@ const rules = [
   .bk-group { margin-top: var(--space-9); }
   .bk-group__head { display: grid; gap: 4px; margin-bottom: var(--space-5); }
   .bk-logos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; }
-  .bk-logos--icon, .bk-logos--wordmark { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .bk-logos--wordmark { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .bk-logos--icon { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .bk-logos--icon .bk-logo__foot { flex-direction: column; align-items: flex-start; gap: 8px; }
   .bk-logo { overflow: hidden; }
   .bk-logo__stage { display: grid; place-items: center; height: 180px; padding: 28px; }
   .bk-logo__stage.is-light { background: #fff; }
   .bk-logo__stage.is-dark { background: #000; }
-  .bk-logos--horizontal .bk-logo__stage { height: 150px; }
+  .bk-logos--horizontal .bk-logo__stage, .bk-logos--full-horizontal .bk-logo__stage { height: 150px; }
   .bk-logo__stage img { max-width: 100%; max-height: 100%; }
-  .bk-logos--vertical .bk-logo__stage img { max-height: 120px; }
+  .bk-logos--vertical .bk-logo__stage img, .bk-logos--full-vertical .bk-logo__stage img { max-height: 120px; }
+  .bk-logos--full-mark .bk-logo__stage img { max-height: 96px; }
   .bk-logos--icon .bk-logo__stage img { max-height: 80px; }
   .bk-logo__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-top: 1px solid var(--separator); }
   .bk-logo__links { display: flex; gap: 6px; }
@@ -225,7 +229,8 @@ const rules = [
   .bk-rules__n { font-size: 13px; font-weight: 600; color: var(--accent); }
 
   @media (max-width: 1068px) {
-    .bk-logos--icon, .bk-logos--wordmark { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bk-logos--wordmark { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bk-logos--icon { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .bk-colors { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .bk-rules { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
@@ -236,7 +241,7 @@ const rules = [
   @media (max-width: 600px) {
     .bk-logos, .bk-logos--icon, .bk-logos--wordmark { gap: 10px; }
     .bk-logo__stage { height: 130px; padding: 18px; }
-    .bk-logos--horizontal .bk-logo__stage { height: 110px; }
+    .bk-logos--horizontal .bk-logo__stage, .bk-logos--full-horizontal .bk-logo__stage { height: 110px; }
     .bk-logo__foot { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; }
     .bk-colors { gap: 10px; }
     .bk-swatch__chip { height: 96px; }

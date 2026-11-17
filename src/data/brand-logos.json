@@ -1,5 +1,117 @@
 [
   {
+    "key": "full-horizontal",
+    "title": "Full-color logo",
+    "use": "The complete logo, with the gold frame and shading. Use it wherever it can be shown large and in full color.",
+    "items": [
+      {
+        "file": "TEC_HORIZONTAL_DEFAULT_RED",
+        "label": "Red type",
+        "bg": "light",
+        "name": "Top-End-Club-Full-Color-Horizontal-Red-Type",
+        "svg": false
+      },
+      {
+        "file": "TEC_HORIZONTAL_DEFAULT_BLACK",
+        "label": "Black type",
+        "bg": "light",
+        "name": "Top-End-Club-Full-Color-Horizontal-Black-Type",
+        "svg": false
+      },
+      {
+        "file": "TEC_HORIZONTAL_DEFAULT_GOLDEN",
+        "label": "Gold type",
+        "bg": "dark",
+        "name": "Top-End-Club-Full-Color-Horizontal-Gold-Type",
+        "svg": false
+      },
+      {
+        "file": "TEC_HORIZONTAL_DEFAULT_WHITE",
+        "label": "White type",
+        "bg": "dark",
+        "name": "Top-End-Club-Full-Color-Horizontal-White-Type",
+        "svg": false
+      },
+      {
+        "file": "TEC_HORIZONTAL_EMPTY_GOLDEN",
+        "label": "Gold, open center",
+        "bg": "dark",
+        "name": "Top-End-Club-Full-Color-Horizontal-Gold-Open",
+        "svg": false
+      }
+    ]
+  },
+  {
+    "key": "full-vertical",
+    "title": "Full-color stacked logo",
+    "use": "The complete logo, stacked, for square spaces: shirts, banners and social posts.",
+    "items": [
+      {
+        "file": "TEC_VERTICAL_DEFAULT_RED",
+        "label": "Red type",
+        "bg": "light",
+        "name": "Top-End-Club-Full-Color-Stacked-Red-Type",
+        "svg": false
+      },
+      {
+        "file": "TEC_VERTICAL_DEFAULT_BLACK",
+        "label": "Black type",
+        "bg": "light",
+        "name": "Top-End-Club-Full-Color-Stacked-Black-Type",
+        "svg": false
+      },
+      {
+        "file": "TEC_VERTICAL_DEFAULT_GOLDEN",
+        "label": "Gold type",
+        "bg": "dark",
+        "name": "Top-End-Club-Full-Color-Stacked-Gold-Type",
+        "svg": false
+      },
+      {
+        "file": "TEC_VERTICAL_DEFAULT_WHITE",
+        "label": "White type",
+        "bg": "dark",
+        "name": "Top-End-Club-Full-Color-Stacked-White-Type",
+        "svg": false
+      },
+      {
+        "file": "TEC_VERTICAL_EMPTY_GOLDEN",
+        "label": "Gold, open center",
+        "bg": "dark",
+        "name": "Top-End-Club-Full-Color-Stacked-Gold-Open",
+        "svg": false
+      }
+    ]
+  },
+  {
+    "key": "full-mark",
+    "title": "Full-color icon and wordmark",
+    "use": "The badge on its own, and the wordmark in gold.",
+    "items": [
+      {
+        "file": "TEC_ICON",
+        "label": "Icon",
+        "bg": "light",
+        "name": "Top-End-Club-Full-Color-Icon",
+        "svg": false
+      },
+      {
+        "file": "TEC_ICON_EMPTY",
+        "label": "Icon, open center",
+        "bg": "dark",
+        "name": "Top-End-Club-Full-Color-Icon-Open",
+        "svg": false
+      },
+      {
+        "file": "TEC_TEXT_GOLDEN",
+        "label": "Gold wordmark",
+        "bg": "dark",
+        "name": "Top-End-Club-Full-Color-Wordmark-Gold",
+        "svg": false
+      }
+    ]
+  },
+  {
     "key": "horizontal",
     "title": "Horizontal logo",
     "use": "For headers, banners and anywhere wide.",
@@ -23,6 +135,12 @@
         "name": "Top-End-Club-Horizontal-Red-Gradient-Red-Type"
       },
       {
+        "file": "TEC_HORIZONTAL_GOLD_ON_BLACK",
+        "label": "Gold, black type",
+        "bg": "light",
+        "name": "Top-End-Club-Horizontal-Gold-Black-Type"
+      },
+      {
         "file": "TEC_HORIZONTAL_BLACK",
         "label": "Black",
         "bg": "light",
@@ -33,6 +151,12 @@
         "label": "Red gradient, white type",
         "bg": "dark",
         "name": "Top-End-Club-Horizontal-Red-Gradient-White-Type"
+      },
+      {
+        "file": "TEC_HORIZONTAL_GOLD_ON_WHITE",
+        "label": "Gold, white type",
+        "bg": "dark",
+        "name": "Top-End-Club-Horizontal-Gold-White-Type"
       },
       {
         "file": "TEC_HORIZONTAL_WHITE",
@@ -66,6 +190,12 @@
         "name": "Top-End-Club-Stacked-Red-Gradient-Red-Type"
       },
       {
+        "file": "TEC_VERTICAL_GOLD_ON_BLACK",
+        "label": "Gold, black type",
+        "bg": "light",
+        "name": "Top-End-Club-Stacked-Gold-Black-Type"
+      },
+      {
         "file": "TEC_VERTICAL_BLACK",
         "label": "Black",
         "bg": "light",
@@ -76,6 +206,12 @@
         "label": "Red gradient, white type",
         "bg": "dark",
         "name": "Top-End-Club-Stacked-Red-Gradient-White-Type"
+      },
+      {
+        "file": "TEC_VERTICAL_GOLD_ON_WHITE",
+        "label": "Gold, white type",
+        "bg": "dark",
+        "name": "Top-End-Club-Stacked-Gold-White-Type"
       },
       {
         "file": "TEC_VERTICAL_WHITE",
@@ -95,6 +231,12 @@
         "label": "Red gradient",
         "bg": "light",
         "name": "Top-End-Club-Icon-Red-Gradient"
+      },
+      {
+        "file": "TEC_ICON_GOLD_GRADIENT",
+        "label": "Gold gradient",
+        "bg": "light",
+        "name": "Top-End-Club-Icon-Gold-Gradient"
       },
       {
         "file": "TEC_ICON_RED",
