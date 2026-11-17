@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from './PageHeader.astro';
+interface Props { title: string; intro: string }
+const { title, intro } = Astro.props;
+---
+<Base title={title}>
+  <PageHeader title={title} intro={intro} />
+  <section class="section--tight container">
+    <p class="t-callout t-secondary reveal">This page is being built. <a class="link-chevron" href="/design/">See the design system</a></p>
+  </section>
+</Base>

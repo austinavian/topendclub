@@ -1,0 +1,11 @@
+---
+// Large title, after the concept mockup: Charlotte Italic, uppercase, top left.
+interface Props { eyebrow?: string; title: string; intro?: string; charlotte?: boolean }
+const { eyebrow, title, intro, charlotte = true } = Astro.props;
+---
+<header class="page-header container">
+  {eyebrow && <p class="page-header__eyebrow t-eyebrow reveal">{eyebrow}</p>}
+  <h1 class:list={['page-header__title reveal', charlotte ? 't-charlotte t-charlotte--xl' : 't-display']} style="--reveal-delay: 60ms">{title}</h1>
+  {intro && <p class="page-header__intro t-body-large reveal" style="--reveal-delay: 140ms">{intro}</p>}
+  <slot />
+</header>

@@ -1,0 +1,136 @@
+---
+// Living style guide for the master design. Not linked in the nav.
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import site from '../data/site.json';
+
+const colors = [
+  { name: 'Charlotte Red', token: '--tec-red', hex: '#891511', note: 'The one accent' },
+  { name: 'Red tri-gradient', token: '--tec-red-gradient', hex: '#B42E25 → #891511 → #530907', note: 'Icon and highlights' },
+  { name: 'Concord Gold', token: '--tec-gold', hex: '#DA872D', note: 'Rare, for awards' },
+  { name: 'Specialty', token: 'section--dark', hex: '#000000 → #220301', note: 'Dark feature sections' },
+];
+const neutrals = ['--bg', '--surface', '--elevated', '--card', '--text', '--text-2', '--text-3', '--separator'];
+const scale = [
+  ['t-hero', 'Hero', '96 / 700'],
+  ['t-display', 'Display', '64 / 700'],
+  ['t-headline', 'Headline', '48 / 600'],
+  ['t-title-1', 'Title 1', '40 / 600'],
+  ['t-title-2', 'Title 2', '32 / 600'],
+  ['t-title-3', 'Title 3', '24 / 600'],
+  ['t-body-large', 'Body large', '21 / 400'],
+  ['t-body', 'Body', '17 / 400'],
+  ['t-callout', 'Callout', '14 / 400'],
+  ['t-caption', 'Caption', '12 / 400'],
+];
+---
+<Base title="Design" description="The Top End Club master design system.">
+  <PageHeader eyebrow="Master design" title="Design system" intro="Colors, type, components and motion for topendclub.org. Light by default, dark when your device is in dark mode. To force one, add ?theme=dark or ?theme=light to the address." />
+
+  <section class="section container">
+    <h2 class="t-headline reveal">Color</h2>
+    <p class="t-body-large t-secondary ds-lead reveal">White or black does the work. Charlotte Red is the only accent, used for links, buttons and one highlight at a time.</p>
+    <div class="grid grid--4 ds-gap">
+      {colors.map((c, i) => (
+        <div class="card reveal" style={`--reveal-delay:${i * 60}ms`}>
+          <div class:list={['ds-swatch', c.token === 'section--dark' && 'section--dark']} style={c.token.startsWith('--') ? `background: var(${c.token})` : ''}></div>
+          <div class="card__body ds-swatch__body">
+            <p class="t-semibold">{c.name}</p>
+            <p class="t-caption t-secondary t-tabular">{c.hex}</p>
+            <p class="t-caption t-tertiary">{c.note}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div class="ds-neutrals reveal">
+      {neutrals.map((n) => (
+        <div class="ds-neutral"><span style={`background: var(${n})`}></span><code class="t-caption t-secondary">{n}</code></div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container">
+      <h2 class="t-headline reveal">Type</h2>
+      <p class="t-body-large t-secondary ds-lead reveal">Avian Pro for everything, on Apple's size, weight and tracking scale. The Text cut runs below 20px, the Display cut above.</p>
+      <div class="ds-scale">
+        {scale.map(([cls, label, spec]) => (
+          <div class="ds-scale__row reveal">
+            <span class="t-caption t-tertiary ds-scale__meta">{label}<br />{spec}</span>
+            <span class={cls}>Top End Club</span>
+          </div>
+        ))}
+      </div>
+
+      <h3 class="t-title-2 ds-sub reveal">Charlotte</h3>
+      <p class="t-body t-secondary ds-lead reveal">Charlotte is for a page's big title and a few hero lines. It is mostly the Italic cut, always uppercase, and never sits next to the logo.</p>
+      <div class="grid grid--2 ds-gap">
+        <div class="tile reveal">
+          <p class="t-caption t-tertiary">Italic, the default</p>
+          <p class="t-charlotte t-charlotte--lg">Events</p>
+        </div>
+        <div class="tile reveal" style="--reveal-delay:60ms">
+          <p class="t-caption t-tertiary">Regular, only where italic looks wrong</p>
+          <p class="t-charlotte t-charlotte--upright t-charlotte--lg">D.R.A.W.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h2 class="t-headline reveal">Components</h2>
+    <div class="ds-row reveal">
+      <a class="button" href="#">Primary</a>
+      <a class="button button--secondary" href="#">Secondary</a>
+      <a class="button button--quiet" href="#">Quiet</a>
+      <a class="button button--small" href="#">Small</a>
+      <a class="link-chevron" href="#">Learn more</a>
+      <span class="badge">Spring 2026</span>
+    </div>
+
+    <div class="grid grid--3 ds-gap">
+      {[
+        ['Spring 2026', 'April 25, 2026', 'The first of the one-event years. $11,592 raised for D.R.A.W.'],
+        ['Fall 2025', 'September 20, 2025', 'The final fall event, and the biggest year of giving yet.'],
+        ['Spring 2025', 'April 26, 2025', '$8,300 raised for D.R.A.W.'],
+      ].map(([t, d, b], i) => (
+        <a class="card reveal" href="#" style={`--reveal-delay:${i * 80}ms`}>
+          <div class="card__body stack" style="--stack: 8px">
+            <p class="t-eyebrow">{d}</p>
+            <h3 class="t-title-3">{t}</h3>
+            <p class="t-callout t-secondary">{b}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container t-center stat">
+      <p class="t-eyebrow reveal">Given to D.R.A.W. since {site.draw.since}</p>
+      <p class="stat__value reveal reveal--scale" style="--reveal-delay:80ms">${site.draw.total.toLocaleString('en-US')}</p>
+      <p class="stat__label reveal" style="--reveal-delay:160ms">As of the {site.draw.asOf}.</p>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h2 class="t-headline reveal">Motion</h2>
+    <p class="t-body-large t-secondary ds-lead reveal">Content rises 24px and fades in once as it scrolls into view, on Apple's long ease-out. Pages cross-fade. Cards lift on hover, buttons press in. With Reduce Motion on, nothing moves.</p>
+  </section>
+</Base>
+
+<style>
+  .ds-lead { margin-top: var(--space-4); max-width: 680px; }
+  .ds-gap { margin-top: var(--space-8); }
+  .ds-sub { margin-top: var(--space-10); }
+  .ds-swatch { height: 120px; }
+  .ds-swatch__body { padding: 20px 24px 24px; display: grid; gap: 2px; }
+  .ds-neutrals { display: flex; flex-wrap: wrap; gap: 20px 28px; margin-top: var(--space-7); }
+  .ds-neutral { display: flex; align-items: center; gap: 10px; }
+  .ds-neutral span { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--separator); }
+  .ds-scale { margin-top: var(--space-8); }
+  .ds-scale__row { display: grid; grid-template-columns: 110px 1fr; align-items: baseline; gap: 16px; padding-block: 18px; border-top: 1px solid var(--separator); overflow: hidden; }
+  .ds-scale__row > span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ds-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 20px; margin-top: var(--space-7); }
+  @media (max-width: 600px) { .ds-scale__row { grid-template-columns: 1fr; gap: 6px; } }
+</style>

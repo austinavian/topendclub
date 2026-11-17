@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import site from '../data/site.json';
+---
+<Base>
+  <section class="home-hero container">
+    <p class="t-eyebrow reveal">Since 2012</p>
+    <h1 class="t-charlotte t-charlotte--xl reveal" style="--reveal-delay: 60ms">Trackside<br />at zMAX</h1>
+    <p class="t-body-large t-secondary reveal" style="--reveal-delay: 140ms">A cookout for racers and their crews, and ${site.draw.total.toLocaleString('en-US')} given to D.R.A.W. so far.</p>
+    <p class="home-hero__links reveal" style="--reveal-delay: 220ms">
+      <a class="button" href="/events/">See the events</a>
+      <a class="link-chevron" href="/draw/">D.R.A.W. total</a>
+    </p>
+  </section>
+</Base>
+<style>
+  .home-hero { padding-block: clamp(64px, 12vw, 160px); display: grid; gap: var(--space-5); }
+  .home-hero__links { display: flex; align-items: center; gap: var(--space-6); margin-top: var(--space-3); flex-wrap: wrap; }
+</style>
