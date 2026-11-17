@@ -100,6 +100,8 @@
     "date": "2017-04-29",
     "name": "Spring Benefit Barbecue",
     "notes": "",
+    "raised": 2105,
+    "totalAfter": 4990,
     "flyer": "2017_1"
   },
   {
@@ -109,6 +111,8 @@
     "date": "2017-09-16",
     "name": "Fall Benefit Barbecue",
     "notes": "",
+    "raised": 2160,
+    "totalAfter": 7150,
     "flyer": "2017_2"
   },
   {

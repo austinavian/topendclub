@@ -14,8 +14,9 @@ type Detail = {
 
 export async function getStaticPaths() {
   const events = await allEvents();
-  const stories = (await getCollection('news')).map((n) => ({ id: n.id, event: n.data.event }));
-  return events.map((e, i) => ({ params: { id: e.id }, props: { e, all: events, prev: events[i - 1] ?? null, next: events[i + 1] ?? null, news: stories.find((n) => n.event === e.id) ?? null } }));
+  const stories = (await getCollection('news')).map((n) => ({ id: n.id, event: n.data.event, kind: n.data.kind }));
+  const story = (id: string) => stories.find((n) => n.event === id && n.kind === 'after-event') ?? stories.find((n) => n.event === id) ?? null;
+  return events.map((e, i) => ({ params: { id: e.id }, props: { e, all: events, prev: events[i - 1] ?? null, next: events[i + 1] ?? null, news: story(e.id) } }));
 }
 interface Props { e: Ev; all: Ev[]; prev: Ev | null; next: Ev | null; news: { id: string } | null }
 const { e, all, prev, next, news } = Astro.props;
