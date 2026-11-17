@@ -1,4 +1,181 @@
 ---
-import ComingSoon from '../../components/ComingSoon.astro';
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { getCollection } from 'astro:content';
+import site from '../../data/site.json';
+
+const events = (await getCollection('events')).map((e) => e.data).sort((a, b) => +a.date - +b.date);
+const giving = events.filter((e) => e.year >= 2016);
+const known = giving.filter((e) => e.raised);
+const usd = (n: number) => '$' + n.toLocaleString('en-US');
+const fmtDate = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+// Chart scale: clean ticks every $10K up past the largest night.
+const max = Math.max(...known.map((e) => e.raised!));
+const top = Math.ceil(max / 10000) * 10000;
+const ticks = Array.from({ length: top / 10000 + 1 }, (_, i) => i * 10000);
+const best = known.reduce((a, b) => (b.raised! > a.raised! ? b : a));
+const latest = known[known.length - 1];
+
+const milestones = [
+  { year: '2016', title: 'First gift', body: `${usd(1460)} at the Mark Lyle & Ronnie Davis Memorial Barbeque, the club's first night giving to D.R.A.W.` },
+  { year: '2016', title: 'Organization of the Year', body: 'D.R.A.W. named the Top End Club its 2016 Organization of the Year.' },
+  { year: '2021', title: 'Passed $20,000', body: 'The fall 2021 event brought the total to $20,005.' },
+  { year: '2024', title: 'Passed $50,000', body: 'The fall 2024 event, given in memory of Rosalee Noble, brought the total to $50,763.' },
+  { year: '2026', title: 'Passed $100,000', body: `The spring 2026 event brought the total to ${usd(site.draw.total)}.` },
+];
+
+const lastYear = giving[giving.length - 1].year;
+const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
 ---
-<ComingSoon title="D.R.A.W." intro="Everything the club has given to D.R.A.W., the Drag Racing Association of Women, since 2016." />
+<Base title="D.R.A.W." description={`The Top End Club has given ${usd(site.draw.total)} to D.R.A.W. since 2016.`}>
+  <PageHeader eyebrow="Giving back" title="D.R.A.W." intro="Every event since 2016 has raised money for D.R.A.W., the Drag Racing Association of Women. It helps drag racing crew members and their families when injury or illness keeps them off the track." />
+
+  <section class="section--dark draw-hero">
+    <div class="container t-center stat">
+      <p class="t-eyebrow reveal">Given to D.R.A.W. since {site.draw.since}</p>
+      <p class="stat__value reveal reveal--scale" style="--reveal-delay:80ms" data-count={site.draw.total}>{usd(site.draw.total)}</p>
+      <p class="stat__label reveal" style="--reveal-delay:160ms">Total to date, as of the {site.draw.asOf}.</p>
+      <p class="reveal draw-hero__link" style="--reveal-delay:220ms"><a class="link-chevron" href={site.draw.url} rel="noopener" target="_blank">About D.R.A.W.</a></p>
+    </div>
+  </section>
+
+  <section class="section container" id="chart">
+    <h2 class="t-headline reveal">Raised at each event</h2>
+    <p class="t-body-large t-secondary draw-lead reveal">The {best.season.toLowerCase()} {best.year} event raised the most so far. Events with no recorded amount are left out.</p>
+
+    <figure class="chart reveal" aria-label="Column chart of the amount raised at each event since 2016">
+      <div class="chart__plot">
+        <div class="chart__grid" aria-hidden="true">
+          {ticks.map((t) => (
+            <div class="chart__tick" style={`bottom:${(t / top) * 100}%`}><span>{t === 0 ? '$0' : `$${t / 1000}K`}</span></div>
+          ))}
+        </div>
+        <ol class="chart__cols" role="list">
+          {known.map((e, i) => {
+            const label = `${e.season} ${e.year}`;
+            const value = `${e.raisedIsEstimate ? 'About ' : ''}${usd(e.raised!)}`;
+            const showCap = e === best || e === latest;
+            const firstOfYear = i === 0 || known[i - 1].year !== e.year;
+            return (
+              <li class="chart__col" tabindex="0" aria-label={`${label}: ${value} raised`}>
+                <span class="chart__bar" style={`height:${(e.raised! / top) * 100}%`}>
+                  {showCap && <span class="chart__cap t-tabular">{usd(Math.round(e.raised! / 100) * 100 / 1000)}K</span>}
+                </span>
+                <span class="chart__tip" role="tooltip">
+                  <span class="t-caption t-secondary">{label}</span>
+                  <span class="t-callout t-semibold t-tabular">{value}</span>
+                </span>
+                <span class="chart__x t-caption">{firstOfYear ? `’${String(e.year).slice(2)}` : ''}</span>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+      <figcaption class="t-caption t-tertiary">Amounts marked “about” are worked out from two running totals the club posted.</figcaption>
+    </figure>
+  </section>
+
+  <section class="section section--surface" id="milestones">
+    <div class="container">
+      <h2 class="t-headline reveal">Milestones</h2>
+      <ol class="milestones" role="list">
+        {milestones.map((m, i) => (
+          <li class="card milestone reveal" style={`--reveal-delay:${i * 60}ms`}>
+            <div class="card__body">
+              <p class="t-eyebrow">{m.year}</p>
+              <h3 class="t-title-3">{m.title}</h3>
+              <p class="t-callout t-secondary">{m.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section container" id="history">
+    <h2 class="t-headline reveal">Giving history</h2>
+    <p class="t-body-large t-secondary draw-lead reveal">Every event since giving began, with the amount raised and the running total after it.</p>
+    <div class="history">
+      {years.map((y) => (
+        <div class="history__year reveal">
+          <h3 class="history__y t-title-2 t-tabular">{y}</h3>
+          {y === 2020 ? (
+            <p class="t-body t-secondary history__note">No events this year because of COVID-19.</p>
+          ) : (
+            <ul role="list" class="history__rows">
+              {giving.filter((e) => e.year === y).map((e) => (
+                <li class="history__row">
+                  <div>
+                    <p class="t-body t-medium">{e.season}{e.private ? ' · Private event' : ''}</p>
+                    <p class="t-caption t-secondary">{fmtDate(e.date)}</p>
+                  </div>
+                  <div class="history__num">
+                    <p class="t-body t-tabular">{e.raised ? `${e.raisedIsEstimate ? 'About ' : ''}${usd(e.raised)}` : ''}</p>
+                    {e.totalAfter && <p class="t-caption t-secondary t-tabular">Total {usd(e.totalAfter)}</p>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .draw-hero { padding-block: clamp(72px, 10vw, 128px); }
+  .draw-hero__link { margin-top: var(--space-6); }
+  .draw-lead { margin-top: var(--space-4); max-width: 680px; }
+
+  /* Column chart: one series, so no legend; the heading names it. */
+  .chart { margin: var(--space-8) 0 0; }
+  .chart__plot { position: relative; height: clamp(240px, 32vw, 340px); margin-left: 44px; }
+  .chart__grid { position: absolute; inset: 0; }
+  .chart__tick { position: absolute; left: 0; right: 0; border-top: 1px solid var(--separator); }
+  .chart__tick span { position: absolute; right: calc(100% + 10px); top: -0.7em; font-size: 12px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .chart__cols { position: absolute; inset: 0; display: flex; align-items: flex-end; gap: 2px; margin: 0; padding: 0 0 0 2px; list-style: none; }
+  .chart__col { position: relative; flex: 1; height: 100%; display: flex; align-items: flex-end; justify-content: center; outline: none; cursor: default; }
+  .chart__bar {
+    position: relative; width: min(24px, 70%); min-height: 2px;
+    background: var(--accent); border-radius: 4px 4px 0 0;
+    transform-origin: bottom; transition: opacity var(--dur) var(--ease);
+  }
+  .chart__cols:hover .chart__bar, .chart__cols:focus-within .chart__bar { opacity: 0.45; }
+  .chart__col:hover .chart__bar, .chart__col:focus .chart__bar { opacity: 1; }
+  .chart__col:hover .chart__cap, .chart__col:focus .chart__cap { opacity: 0; }
+  .chart__cap { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .chart__x { position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); color: var(--text-3); white-space: nowrap; }
+  .chart__tip {
+    position: absolute; bottom: calc(100% + 8px); left: 50%; z-index: 2;
+    display: grid; gap: 2px; padding: 8px 12px; white-space: nowrap;
+    background: var(--elevated); border: 1px solid var(--card-border); border-radius: var(--radius-md); box-shadow: var(--shadow-md);
+    opacity: 0; pointer-events: none; transform: translate(-50%, 4px);
+    transition: opacity var(--dur-micro) var(--ease), transform var(--dur-micro) var(--ease);
+  }
+  .chart__col:hover .chart__tip, .chart__col:focus .chart__tip { opacity: 1; transform: translate(-50%, 0); }
+  .chart__col:nth-child(-n+3) .chart__tip { left: 0; transform: translate(0, 4px); }
+  .chart__col:nth-child(-n+3):hover .chart__tip, .chart__col:nth-child(-n+3):focus .chart__tip { transform: none; }
+  .chart__col:nth-last-child(-n+3) .chart__tip { left: auto; right: 0; transform: translate(0, 4px); }
+  .chart__col:nth-last-child(-n+3):hover .chart__tip, .chart__col:nth-last-child(-n+3):focus .chart__tip { transform: none; }
+  .chart figcaption { margin-top: 40px; }
+  .reveal.is-visible .chart__bar { animation: grow var(--dur-page) var(--ease-out) both; }
+  @keyframes grow { from { transform: scaleY(0); } }
+
+  .milestones { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: var(--space-5); margin-top: var(--space-8); padding: 0; }
+  .milestone .card__body { display: grid; gap: 6px; padding: 24px 24px 28px; }
+
+  .history { margin-top: var(--space-8); }
+  .history__year { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding-block: 24px; border-top: 1px solid var(--separator); }
+  .history__y { font-family: var(--font-sans); }
+  .history__rows { margin: 0; }
+  .history__row { display: flex; justify-content: space-between; gap: 16px; padding-block: 6px; }
+  .history__row + .history__row { margin-top: 10px; }
+  .history__num { text-align: right; }
+  .history__note { padding-top: 6px; }
+  @media (max-width: 600px) {
+    .history__year { grid-template-columns: 1fr; gap: 8px; }
+    .chart__plot { margin-left: 36px; }
+  }
+</style>
