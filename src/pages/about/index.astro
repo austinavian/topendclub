@@ -131,7 +131,7 @@ const milestones = [
     mask-image: linear-gradient(to bottom, #000 60%, transparent 100%), linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
     mask-composite: intersect;
   }
-  .ab-hero__text { position: relative; display: grid; justify-items: center; gap: var(--space-4); margin-top: clamp(-160px, -12vw, -48px); text-align: center; }
+  .ab-hero__text { position: relative; display: grid; justify-items: center; gap: var(--space-4); margin-top: clamp(-40px, -3vw, -20px); text-align: center; }
   .ab-hero__eyebrow { color: #ff6b5e; }
   .ab-hero__intro { max-width: 640px; color: rgba(255, 255, 255, 0.78); }
 
@@ -142,13 +142,13 @@ const milestones = [
 
   .ab-stats { padding-block: clamp(56px, 8vw, 96px); }
   .ab-stats__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
-  .ab-stats__grid > div { display: grid; align-content: start; gap: 6px; padding-inline: 20px; text-align: center; }
+  .ab-stats__grid > div { display: grid; align-content: start; gap: 6px; padding-inline: 12px; text-align: center; }
   .ab-stats__grid > div + div { border-left: 1px solid rgba(255, 255, 255, 0.16); }
   .ab-stats dt { font-size: 14px; color: rgba(255, 255, 255, 0.6); }
-  .ab-stats dd { margin: 0; display: grid; gap: 4px; font-size: clamp(36px, 5vw, 64px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; color: #fff; }
+  .ab-stats dd { margin: 0; display: grid; gap: 4px; font-size: clamp(34px, 4.6vw, 56px); font-weight: 600; letter-spacing: -0.012em; line-height: 1.05; color: #fff; font-variation-settings: "opsz" var(--opsz-display); }
   .ab-stats dd a { color: inherit; }
   .ab-stats dd a:hover { text-decoration: none; color: #ff6b5e; }
-  .ab-stats dd span { font-size: 14px; font-weight: 400; letter-spacing: 0; color: rgba(255, 255, 255, 0.6); }
+  .ab-stats dd span { font-size: 14px; font-weight: 400; letter-spacing: -0.016em; color: rgba(255, 255, 255, 0.6); font-variation-settings: "opsz" var(--opsz-text); }
 
   .ab-lead { max-width: 680px; margin-top: var(--space-3); }
   .ab-people { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: var(--space-7) 0 0; padding: 0; }
@@ -182,7 +182,7 @@ const milestones = [
     .ab-miles { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 600px) {
-    .ab-hero__text { margin-top: -28px; }
+    .ab-hero__text { margin-top: -12px; }
     .ab-people { grid-template-columns: minmax(0, 1fr); gap: 10px; }
     .ab-person { padding: 14px 16px; }
     .ab-mile { grid-template-columns: 52px 1fr; }

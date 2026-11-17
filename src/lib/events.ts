@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import styles from '../data/flyer-styles.json';
 
@@ -23,11 +24,16 @@ export const longDate = (d: Date) =>
   d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 export const shortDate = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+/** 2026-04-25, for <time datetime> and schema.org. */
+export const isoDate = (d: Date) => d.toISOString().slice(0, 10);
 export const raisedText = (e: Ev) => (e.raised ? `${e.raisedIsEstimate ? 'About ' : ''}${usd(e.raised)}` : null);
 
 /** Rounded for tiles and cards: 3510 -> "$3.5K", 29350 -> "$29.4K". */
 export const compactUsd = (n: number) =>
   n >= 1000 ? `$${(n / 1000).toFixed(1).replace(/\.0$/, '')}K` : usd(n);
+
+/** The event's sharing card (made by scripts/share-images.py), or the club's card until one exists. */
+export const shareImage = (e: Ev) => (existsSync(`public/og/${e.id}.jpg`) ? `/og/${e.id}.jpg` : '/og/default.jpg');
 
 /** Key for the generated artwork in public/events/art (2021 events have art but no flyer). */
 export const artKey = (e: Ev) => e.flyer ?? `${e.year}_${e.season === 'Spring' ? 1 : 2}`;

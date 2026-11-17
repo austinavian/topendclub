@@ -1,14 +1,15 @@
 ---
 import { styleFor, shortDate, compactUsd, artKey, type Ev } from '../lib/events';
-interface Props { event: Ev; delay?: number }
-const { event: e, delay = 0 } = Astro.props;
+// `sizes` is how wide the card's art is drawn, so phones in a two-up grid fetch the small file.
+interface Props { event: Ev; delay?: number; sizes?: string }
+const { event: e, delay = 0, sizes = '(max-width: 833px) 92vw, 400px' } = Astro.props;
 const s = styleFor(e);
 const raised = e.raised ? compactUsd(e.raised) : null;
 const art = `/events/art/${artKey(e)}`;
 ---
 <a class="card ev-card reveal" href={`/events/${e.id}/`} style={`--reveal-delay:${delay}ms; --ev-accent:${s.accent}; --ev-bg:${s.bg}`}>
   <div class:list={['ev-card__art', { 'is-dark': s.dark, 'is-borrowed': s.borrowed }]}>
-    <img src={`${art}-thumb-sm.webp`} srcset={`${art}-thumb-sm.webp 600w, ${art}-thumb.webp 1200w`} sizes="(max-width: 833px) 92vw, 400px" alt="" loading="lazy" decoding="async" width="600" height="450" />
+    <img src={`${art}-thumb-sm.webp`} srcset={`${art}-thumb-sm.webp 600w, ${art}-thumb.webp 1200w`} sizes={sizes} alt="" loading="lazy" decoding="async" width="600" height="450" />
   </div>
   <div class="ev-card__body">
     <p class="ev-card__date t-caption">{shortDate(e.date)}</p>

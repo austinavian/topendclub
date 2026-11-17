@@ -13,8 +13,22 @@ const recent = events.slice(-4, -1).reverse();
 const years = latest.year - site.founded;
 // Videos for events already on this page: the latest (hero) and the recent cards.
 const videos = [latest, ...recent].filter((e) => e.video);
+const home = new URL('/', Astro.site).href;
+const schema = [
+  {
+    '@type': 'Organization',
+    name: site.name,
+    alternateName: site.shortName,
+    url: home,
+    logo: new URL('/apple-touch-icon.png', Astro.site).href,
+    foundingDate: String(site.founded),
+    location: { '@type': 'Place', name: 'zMAX Dragway', address: { '@type': 'PostalAddress', addressLocality: 'Concord', addressRegion: 'NC', addressCountry: 'US' } },
+    sameAs: [site.facebookGroup, site.youtube, site.instagram],
+  },
+  { '@type': 'WebSite', name: site.name, alternateName: site.shortName, url: home },
+];
 ---
-<Base description={`${site.name}: a trackside cookout at zMAX Dragway since ${site.founded}, raising money for D.R.A.W.`}>
+<Base description={`${site.name}: a trackside cookout at zMAX Dragway since ${site.founded}, raising money for D.R.A.W.`} schema={schema}>
   <section class="hero">
     <PhotoRotator class="hero__photos" sizes="(max-width: 833px) 100vw, 62vw" caption />
     <div class="container hero__inner">
@@ -50,7 +64,7 @@ const videos = [latest, ...recent].filter((e) => e.video);
       <div class:list={['home-videos__grid', { 'is-pair': videos.length > 1 }]}>
         {videos.map((v, i) => (
           <figure class="home-video reveal" style={`--reveal-delay:${i * 80}ms`}>
-            <YouTube id={v.video!} title={`The Top End Club, ${v.season} ${v.year}`} poster={`/videos/${v.id}-event-video`} />
+            <YouTube id={v.video!} title={`The Top End Club, ${v.season} ${v.year}`} poster={`/videos/${v.id}-event-video`} sizes={videos.length > 1 ? '(max-width: 900px) 100vw, 520px' : undefined} />
             <figcaption><a href={`/events/${v.id}/`} class="t-body t-semibold home-video__ev">{v.season} {v.year}</a> <span class="t-secondary">· {v.name}</span></figcaption>
           </figure>
         ))}

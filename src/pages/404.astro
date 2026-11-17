@@ -1,0 +1,28 @@
+---
+// Shown by Cloudflare Pages for any address that doesn't exist.
+import Base from '../layouts/Base.astro';
+import { allEvents } from '../lib/events';
+
+const events = await allEvents();
+const latest = events[events.length - 1];
+---
+<Base title="Page not found" description="That page isn't on topendclub.org." noindex>
+  <section class="nf container">
+    <p class="t-eyebrow reveal">Error 404</p>
+    <h1 class="t-charlotte t-charlotte--lg reveal" style="--reveal-delay:60ms">Off the track</h1>
+    <p class="t-body-large t-secondary nf__intro reveal" style="--reveal-delay:140ms">
+      That page isn't here. It may have moved, or the address may be mistyped.
+    </p>
+    <p class="nf__links reveal" style="--reveal-delay:220ms">
+      <a class="button" href="/">Back to the home page</a>
+      <a class="link-chevron" href="/events/">All events</a>
+      <a class="link-chevron" href={`/events/${latest.id}/`}>{latest.season} {latest.year} event</a>
+    </p>
+  </section>
+</Base>
+
+<style>
+  .nf { display: grid; gap: var(--space-5); align-content: center; min-height: min(70vh, 640px); padding-block: var(--section-pad); }
+  .nf__intro { max-width: 520px; }
+  .nf__links { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 24px; margin-top: var(--space-2); }
+</style>

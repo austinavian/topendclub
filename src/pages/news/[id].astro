@@ -2,7 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import YouTube from '../../components/YouTube.astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
-import { allEvents, longDate, shortDate, artKey, styleFor, compactUsd, type Ev } from '../../lib/events';
+import { allEvents, longDate, shortDate, isoDate, shareImage, artKey, styleFor, compactUsd, type Ev } from '../../lib/events';
+import site from '../../data/site.json';
 import photos from '../../data/photos-2026.json';
 
 export async function getStaticPaths() {
@@ -24,11 +25,24 @@ const art = ev ? `/events/art/${artKey(ev)}` : null;
 const gallery = ev?.id === '2026-spring' ? photos : [];
 const hero = gallery.find((p) => p.key === '2026-spring-draw-check-presentation');
 const kindLabel = d.kind === 'after-event' ? 'After the event' : 'From the club';
+const description = d.summary ?? d.title;
+const image = ev ? shareImage(ev) : undefined;
+const abs = (path: string) => new URL(path, Astro.site).href;
+const schema = {
+  '@type': 'NewsArticle',
+  headline: d.title,
+  description,
+  datePublished: isoDate(d.date),
+  author: { '@type': 'Organization', name: d.author },
+  publisher: { '@type': 'Organization', name: site.name, url: abs('/') },
+  image: abs(image ?? '/og/default.jpg'),
+  mainEntityOfPage: abs(`/news/${post.id}/`),
+};
 ---
-<Base title={d.title} crumb="News" description={d.summary ?? d.title}>
+<Base title={d.title} crumb="News" description={description} type="article" image={image} imageAlt={ev ? `Artwork for the ${ev.season} ${ev.year} Top End Club event` : undefined} schema={schema}>
   <article class="ns" style={s ? `--ev-accent:${s.accent}` : undefined}>
     <header class="container container--text ns-head">
-      <p class="t-eyebrow ns-head__eyebrow reveal"><a href={`/news/#${d.kind === 'after-event' ? 'after-the-event' : 'club'}`}>{kindLabel}</a> <span aria-hidden="true">·</span> <time datetime={d.date.toISOString().slice(0, 10)}>{longDate(d.date)}</time></p>
+      <p class="t-eyebrow ns-head__eyebrow reveal"><a href={`/news/#${d.kind === 'after-event' ? 'after-the-event' : 'club'}`}>{kindLabel}</a> <span aria-hidden="true">·</span> <time datetime={isoDate(d.date)}>{longDate(d.date)}</time></p>
       <h1 class="ns-head__title reveal" style="--reveal-delay:60ms">{d.title}</h1>
       {d.summary && <p class="t-body-large t-secondary reveal" style="--reveal-delay:120ms">{d.summary}</p>}
       <p class="t-callout t-tertiary ns-head__by reveal" style="--reveal-delay:160ms">By {d.author}</p>
@@ -44,7 +58,7 @@ const kindLabel = d.kind === 'after-event' ? 'After the event' : 'From the club'
         ) : (
           <img class="ns-cover__art" src={`${art}-thumb.webp`} alt={`Artwork from the ${ev!.season} ${ev!.year} flyer`} width="1200" height="900" fetchpriority="high" />
         )}
-        {hero && <figcaption class="t-caption t-tertiary">{hero.alt}</figcaption>}
+        {hero && <figcaption class="t-caption t-tertiary" aria-hidden="true">{hero.alt}</figcaption>}
       </figure>
     )}
 
@@ -70,7 +84,7 @@ const kindLabel = d.kind === 'after-event' ? 'After the event' : 'From the club'
                   <source type="image/webp" srcset={`/photos/2026/${p.key}-sm.webp 960w, /photos/2026/${p.key}.webp 1920w`} sizes="(max-width: 833px) 100vw, 480px" />
                   <img src={`/photos/2026/${p.key}.jpg`} alt={p.alt} width={p.w} height={p.h} style={`object-position:${p.focus}`} loading="lazy" decoding="async" />
                 </picture>
-                <figcaption class="t-caption t-tertiary">{p.alt}</figcaption>
+                <figcaption class="t-caption t-tertiary" aria-hidden="true">{p.alt}</figcaption>
               </figure>
             </li>
           ))}

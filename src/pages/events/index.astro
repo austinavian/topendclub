@@ -37,7 +37,7 @@ const years = Array.from({ length: latest.year - first + 1 }, (_, i) => latest.y
             <h3 class="timeline__y t-title-1 t-tabular reveal">{y}</h3>
             {list.length ? (
               <div class="timeline__cards">
-                {list.map((e, i) => <EventCard event={e} delay={i * 80} />)}
+                {list.map((e, i) => <EventCard event={e} delay={i * 80} sizes="(max-width: 833px) 46vw, 440px" />)}
               </div>
             ) : (
               <p class="t-body t-secondary timeline__none reveal">No events in {y} because of COVID-19.</p>

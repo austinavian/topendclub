@@ -7,11 +7,43 @@ import TabBar from '../components/TabBar.astro';
 import Footer from '../components/Footer.astro';
 import site from '../data/site.json';
 
-interface Props { title?: string; description?: string; crumb?: string }
-const { title, description = `${site.name}. ${site.tagline}`, crumb } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+  crumb?: string;
+  /** Path of the sharing image in public/ (1200 x 630 JPEG). Defaults to the club's card. */
+  image?: string;
+  imageAlt?: string;
+  /** Open Graph type: "website" for pages, "article" for news stories. */
+  type?: 'website' | 'article';
+  /** schema.org data for this page, as one object or a list. */
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  /** Keep this page out of search engines even on production. */
+  noindex?: boolean;
+}
+const {
+  title,
+  description = `${site.name}. ${site.tagline}`,
+  crumb,
+  image = '/og/default.jpg',
+  imageAlt = 'The Top End Club presents a check to D.R.A.W. at zMAX Dragway',
+  type = 'website',
+  schema,
+  noindex = false,
+} = Astro.props;
 // Cloudflare Pages sets CF_PAGES_BRANCH at build time. Only main is indexed by search engines.
-const isProd = (process.env.CF_PAGES_BRANCH ?? 'main') === 'main';
-const fullTitle = title ? `${title} · ${site.name}` : site.name;
+const branch = process.env.CF_PAGES_BRANCH ?? 'main';
+const isProd = branch === 'main';
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.tagline.replace(/\.$/, '')}`;
+// Canonical and sharing URLs always point at the production address, with a trailing slash.
+const origin = Astro.site ?? new URL('https://topendclub.org');
+const path = Astro.url.pathname.endsWith('/') || Astro.url.pathname.includes('.') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = new URL(path, origin).href;
+// Link previews fetch the image right away, so test builds point at their own address, where the file exists.
+const shareOrigin = isProd ? origin : new URL(branch === 'beta' ? 'https://beta.topendclub.org' : (process.env.CF_PAGES_URL ?? origin));
+const imageUrl = new URL(image, shareOrigin).href;
+const shareUrl = new URL(path, shareOrigin).href;
+const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 ---
 <!doctype html>
 <html lang="en">
@@ -20,14 +52,29 @@ const fullTitle = title ? `${title} · ${site.name}` : site.name;
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    {!isProd && <meta name="robots" content="noindex, nofollow" />}
+    {(!isProd || noindex) && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-    <link rel="icon" href="/brand/TEC_ICON_RED.svg" type="image/svg+xml" />
-    <link rel="preload" href="/fonts/AvianPro-Latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/AvianPro-Latin-Normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Charlotte-Italic.woff2" as="font" type="font/woff2" crossorigin />
-    <meta property="og:title" content={fullTitle} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title ?? site.name} />
     <meta property="og:description" content={description} />
+    <meta property="og:url" content={shareUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {schemas.map((s) => (
+      <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', ...s }).replace(/</g, '\\u003c')} />
+    ))}
     <script is:inline>
       // Runs before paint: mark JS, and honour ?theme=light|dark for testing both looks.
       (function () {
@@ -45,8 +92,9 @@ const fullTitle = title ? `${title} · ${site.name}` : site.name;
     <ClientRouter />
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <GlobalNav />
-    <main id="main" transition:name="main">
+    <main id="main" tabindex="-1" transition:name="main">
       <slot />
     </main>
     <Footer crumb={crumb ?? title} />

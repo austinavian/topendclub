@@ -12,3 +12,22 @@
 
 /flyers/*
   Cache-Control: public, max-age=604800
+
+# Photos and artwork keep their file names when they are replaced, so cache them for a week, not forever.
+/photos/*
+  Cache-Control: public, max-age=604800
+
+/events/art/*
+  Cache-Control: public, max-age=604800
+
+/videos/*
+  Cache-Control: public, max-age=604800
+
+/sponsors/*
+  Cache-Control: public, max-age=604800
+
+/brand/*
+  Cache-Control: public, max-age=604800
+
+/og/*
+  Cache-Control: public, max-age=604800

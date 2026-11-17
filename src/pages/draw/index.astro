@@ -1,15 +1,12 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import { getCollection } from 'astro:content';
+import { allEvents, usd, compactUsd, shortDate, raisedText } from '../../lib/events';
 import site from '../../data/site.json';
 
-const events = (await getCollection('events')).map((e) => ({ ...e.data, id: e.id })).sort((a, b) => +a.date - +b.date);
-const compact = (n: number) => `$${(n / 1000).toFixed(1).replace(/\.0$/, '')}K`;
-const giving = events.filter((e) => e.year >= 2016);
+const events = await allEvents();
+const giving = events.filter((e) => e.year >= site.draw.since);
 const known = giving.filter((e) => e.raised);
-const usd = (n: number) => '$' + n.toLocaleString('en-US');
-const fmtDate = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 
 // Chart scale: clean ticks every $10K up past the largest night.
 const max = Math.max(...known.map((e) => e.raised!));
@@ -39,8 +36,8 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
       <p class="draw-hero__asof reveal" style="--reveal-delay:140ms">Total to date, as of the <a href={`/events/${site.draw.asOfEvent}/`}>{site.draw.asOf}</a>.</p>
       <dl class="draw-hero__stats reveal" style="--reveal-delay:200ms">
         <div><dt>Benefit nights</dt><dd class="t-tabular">{giving.length}</dd></div>
-        <div><dt>Best night</dt><dd class="t-tabular"><a href={`/events/${best.id}/`}>{compact(best.raised!)}<span>{best.season} {best.year}</span></a></dd></div>
-        <div><dt>Latest night</dt><dd class="t-tabular"><a href={`/events/${latest.id}/`}>{compact(latest.raised!)}<span>{latest.season} {latest.year}</span></a></dd></div>
+        <div><dt>Best night</dt><dd class="t-tabular"><a href={`/events/${best.id}/`}>{compactUsd(best.raised!)}<span>{best.season} {best.year}</span></a></dd></div>
+        <div><dt>Latest night</dt><dd class="t-tabular"><a href={`/events/${latest.id}/`}>{compactUsd(latest.raised!)}<span>{latest.season} {latest.year}</span></a></dd></div>
       </dl>
       <p class="reveal draw-hero__link" style="--reveal-delay:260ms"><a class="link-chevron" href={site.draw.url} rel="noopener" target="_blank">About D.R.A.W.</a></p>
     </div>
@@ -60,19 +57,19 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
         <ol class="chart__cols" role="list">
           {known.map((e, i) => {
             const label = `${e.season} ${e.year}`;
-            const value = `${e.raisedIsEstimate ? 'About ' : ''}${usd(e.raised!)}`;
+            const value = raisedText(e)!;
             const showCap = e === best || e === latest;
             const firstOfYear = i === 0 || known[i - 1].year !== e.year;
             return (
               <li class="chart__col" tabindex="0" aria-label={`${label}: ${value} raised`}>
                 <span class="chart__bar" style={`height:${(e.raised! / top) * 100}%`}>
-                  {showCap && <span class="chart__cap t-tabular">{usd(Math.round(e.raised! / 100) * 100 / 1000)}K</span>}
+                  {showCap && <span class:list={['chart__cap t-tabular', { 'chart__cap--best': e === best }]}>{compactUsd(e.raised!)}</span>}
                 </span>
                 <span class="chart__tip" role="tooltip">
                   <span class="t-caption t-secondary">{label}</span>
                   <span class="t-callout t-semibold t-tabular">{value}</span>
                 </span>
-                <span class="chart__x t-caption">{firstOfYear ? `’${String(e.year).slice(2)}` : ''}</span>
+                {firstOfYear && <span class:list={['chart__x t-caption', { 'chart__x--odd': e.year % 2 === 1 }]}>’{String(e.year).slice(2)}</span>}
               </li>
             );
           })}
@@ -114,11 +111,11 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
                 <li class="history__row">
                   <div>
                     <a class="history__ev t-body t-medium" href={`/events/${e.id}/`}>{e.season}<svg class="history__chev" viewBox="0 0 8 14" width="7" height="12" aria-hidden="true"><path d="M1.5 1.5 6.5 7l-5 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
-                    <p class="t-caption t-secondary">{fmtDate(e.date)}</p>
+                    <p class="t-caption t-secondary">{shortDate(e.date)}</p>
                   </div>
                   <div class="history__num">
-                    <p class="t-body t-tabular">{e.raised ? `${e.raisedIsEstimate ? 'About ' : ''}${usd(e.raised)}` : ''}</p>
-                    {e.totalAfter && <p class="t-caption t-secondary t-tabular">Total {usd(e.totalAfter)}</p>}
+                    {e.raised && <p class="t-body t-tabular">{raisedText(e)}</p>}
+                    {e.totalAfter && <p class:list={['t-secondary t-tabular', e.raised ? 't-caption' : 't-callout history__only']}>Total {usd(e.totalAfter)}</p>}
                   </div>
                 </li>
               ))}
@@ -138,7 +135,7 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
   .draw-hero__inner { display: grid; justify-items: center; }
   .draw-hero__eyebrow { color: #ff6b5e; }
   .draw-hero__value { margin-top: 14px; font-size: clamp(64px, 12vw, 152px); letter-spacing: -0.035em; }
-  .draw-hero__asof { margin-top: 18px; font-size: clamp(17px, 1.6vw, 21px); color: rgba(255, 255, 255, 0.72); }
+  .draw-hero__asof { margin-top: 18px; font-size: clamp(17px, 1.6vw, 21px); letter-spacing: 0.007em; color: rgba(255, 255, 255, 0.72); font-variation-settings: "opsz" var(--opsz-display); }
   .draw-hero__asof a { color: #fff; }
   .draw-hero__stats {
     display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(640px, 100%);
@@ -147,9 +144,9 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
   .draw-hero__stats > div { display: grid; gap: 6px; padding-inline: 12px; align-content: start; }
   .draw-hero__stats > div + div { border-left: 1px solid rgba(255, 255, 255, 0.16); }
   .draw-hero__stats dt { font-size: 13px; color: rgba(255, 255, 255, 0.6); }
-  .draw-hero__stats dd { margin: 0; font-size: clamp(26px, 3vw, 36px); font-weight: 600; letter-spacing: -0.01em; line-height: 1.1; color: #fff; }
+  .draw-hero__stats dd { margin: 0; font-size: clamp(26px, 3vw, 36px); font-weight: 600; letter-spacing: 0; line-height: 1.1; color: #fff; font-variation-settings: "opsz" var(--opsz-display); }
   .draw-hero__stats dd a { color: #fff; display: grid; gap: 4px; }
-  .draw-hero__stats dd span { font-size: 13px; font-weight: 400; letter-spacing: 0; color: rgba(255, 255, 255, 0.6); }
+  .draw-hero__stats dd span { font-size: 13px; font-weight: 400; letter-spacing: -0.006em; color: rgba(255, 255, 255, 0.6); font-variation-settings: "opsz" var(--opsz-text); }
   .draw-hero__stats dd a:hover { text-decoration: none; }
   .draw-hero__stats dd a:hover span { color: #fff; }
   .draw-hero__link { margin-top: clamp(28px, 4vw, 40px); }
@@ -206,9 +203,12 @@ const years = Array.from({ length: lastYear - 2015 }, (_, i) => 2016 + i);
   .history__chev { color: var(--text-3); opacity: 0.7; transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease); }
   .history__ev:hover .history__chev { transform: translateX(2px); opacity: 1; }
   .history__note { padding-top: 6px; }
+  .history__only { padding-top: 3px; }
   @media (max-width: 600px) {
     .draw-hero__stats > div { padding-inline: 6px; }
     .history__year { grid-template-columns: 1fr; gap: 8px; }
     .chart__plot { margin-left: 36px; }
+    /* Narrow columns: label every other year, and only the tallest bar. */
+    .chart__x--odd, .chart__cap:not(.chart__cap--best) { display: none; }
   }
 </style>
