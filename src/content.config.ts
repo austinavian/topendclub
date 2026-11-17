@@ -30,7 +30,8 @@ const news = defineCollection({
     kind: z.enum(['after-event', 'club']).default('club'),
     event: z.string().optional(),           // id from events.json
     summary: z.string().optional(),
-    cover: z.string().optional(),
+    cover: z.string().optional(),           // 1200x900 transparent image shown on a stage, e.g. a logo
+    coverAlt: z.string().optional(),
   }),
 });
 
