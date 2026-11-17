@@ -15,10 +15,4 @@ After four years of cooking for whoever came by, the Top End Club tried somethin
 
 ## How it started
 
-The idea came together over dinner a few weeks before the race.
-
-> Well, the TEC brain trust got together Saturday night and made plans for the race. This year the party will be the TEC Mark Lyle Memorial BBQ. As suggested, we will be taking donations and presenting all proceeds to D.R.A.W. in honor of Mark. Safety Safari people, make sure you spread the word to your coworkers and NHRA officials.
->
-> Let's make this great and help a racing family charity in honor of a fallen friend.
-
-<p class="post-source">Rodney Smith, in the club’s Facebook group</p>
+The idea came together a few weeks before the race, when the club decided to turn its Saturday night party into a memorial BBQ. [Read the announcement](/news/2016-mark-lyle-memorial-bbq/).
