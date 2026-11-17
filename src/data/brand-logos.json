@@ -1,0 +1,150 @@
+[
+  {
+    "key": "horizontal",
+    "title": "Horizontal logo",
+    "use": "For headers, banners and anywhere wide.",
+    "items": [
+      {
+        "file": "TEC_HORIZONTAL_RED_ON_BLACK",
+        "label": "Red gradient, black type",
+        "bg": "light",
+        "name": "Top-End-Club-Horizontal-Red-Gradient-Black-Type"
+      },
+      {
+        "file": "TEC_HORIZONTAL_RED",
+        "label": "Red",
+        "bg": "light",
+        "name": "Top-End-Club-Horizontal-Red"
+      },
+      {
+        "file": "TEC_HORIZONTAL_RED_ON_RED",
+        "label": "Red gradient, red type",
+        "bg": "light",
+        "name": "Top-End-Club-Horizontal-Red-Gradient-Red-Type"
+      },
+      {
+        "file": "TEC_HORIZONTAL_BLACK",
+        "label": "Black",
+        "bg": "light",
+        "name": "Top-End-Club-Horizontal-Black"
+      },
+      {
+        "file": "TEC_HORIZONTAL_RED_ON_WHITE",
+        "label": "Red gradient, white type",
+        "bg": "dark",
+        "name": "Top-End-Club-Horizontal-Red-Gradient-White-Type"
+      },
+      {
+        "file": "TEC_HORIZONTAL_WHITE",
+        "label": "White",
+        "bg": "dark",
+        "name": "Top-End-Club-Horizontal-White"
+      }
+    ]
+  },
+  {
+    "key": "vertical",
+    "title": "Stacked logo",
+    "use": "For square spaces: shirts, stickers, social posts.",
+    "items": [
+      {
+        "file": "TEC_VERTICAL_RED_ON_BLACK",
+        "label": "Red gradient, black type",
+        "bg": "light",
+        "name": "Top-End-Club-Stacked-Red-Gradient-Black-Type"
+      },
+      {
+        "file": "TEC_VERTICAL_RED",
+        "label": "Red",
+        "bg": "light",
+        "name": "Top-End-Club-Stacked-Red"
+      },
+      {
+        "file": "TEC_VERTICAL_RED_ON_RED",
+        "label": "Red gradient, red type",
+        "bg": "light",
+        "name": "Top-End-Club-Stacked-Red-Gradient-Red-Type"
+      },
+      {
+        "file": "TEC_VERTICAL_BLACK",
+        "label": "Black",
+        "bg": "light",
+        "name": "Top-End-Club-Stacked-Black"
+      },
+      {
+        "file": "TEC_VERTICAL_RED_ON_WHITE",
+        "label": "Red gradient, white type",
+        "bg": "dark",
+        "name": "Top-End-Club-Stacked-Red-Gradient-White-Type"
+      },
+      {
+        "file": "TEC_VERTICAL_WHITE",
+        "label": "White",
+        "bg": "dark",
+        "name": "Top-End-Club-Stacked-White"
+      }
+    ]
+  },
+  {
+    "key": "icon",
+    "title": "Icon",
+    "use": "For small spaces and avatars, once people know the club.",
+    "items": [
+      {
+        "file": "TEC_ICON_RED_GRADIENT",
+        "label": "Red gradient",
+        "bg": "light",
+        "name": "Top-End-Club-Icon-Red-Gradient"
+      },
+      {
+        "file": "TEC_ICON_RED",
+        "label": "Red",
+        "bg": "light",
+        "name": "Top-End-Club-Icon-Red"
+      },
+      {
+        "file": "TEC_ICON_BLACK",
+        "label": "Black",
+        "bg": "light",
+        "name": "Top-End-Club-Icon-Black"
+      },
+      {
+        "file": "TEC_ICON_WHITE",
+        "label": "White",
+        "bg": "dark",
+        "name": "Top-End-Club-Icon-White"
+      }
+    ]
+  },
+  {
+    "key": "wordmark",
+    "title": "Wordmark",
+    "use": "The name alone, set in Charlotte.",
+    "items": [
+      {
+        "file": "TEC_TEXT_RED",
+        "label": "Red",
+        "bg": "light",
+        "name": "Top-End-Club-Wordmark-Red"
+      },
+      {
+        "file": "TEC_TEXT_DUAL_RED_GOLD",
+        "label": "Red and gold",
+        "bg": "light",
+        "name": "Top-End-Club-Wordmark-Red-And-Gold"
+      },
+      {
+        "file": "TEC_TEXT_BLACK",
+        "label": "Black",
+        "bg": "light",
+        "name": "Top-End-Club-Wordmark-Black"
+      },
+      {
+        "file": "TEC_TEXT_WHITE",
+        "label": "White",
+        "bg": "dark",
+        "name": "Top-End-Club-Wordmark-White"
+      }
+    ]
+  }
+]

@@ -1,4 +1,246 @@
 ---
-import ComingSoon from '../../components/ComingSoon.astro';
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import groups from '../../data/brand-logos.json';
+
+const colors = [
+  { name: 'Charlotte Red', hex: '#891511', note: 'The main accent. Titles, buttons, links.', ink: '#fff' },
+  { name: 'Concord Gold', hex: '#DA872D', note: 'Used rarely, for a touch of trophy.', ink: '#1d1d1f' },
+  { name: 'White', hex: '#FFFFFF', note: 'The default background, with black and gray type.', ink: '#1d1d1f', edge: true },
+  { name: 'Black', hex: '#000000', note: 'The dark background, with white and gray type.', ink: '#fff' },
+];
+const gradients = [
+  { name: 'Red gradient', stops: ['#B42E25', '#891511', '#530907'], css: 'var(--tec-red-gradient)', ink: '#fff' },
+  { name: 'Gold gradient', stops: ['#FFFFE6', '#DA882D', '#CB7124', '#BC8654'], css: 'var(--tec-gold-gradient)', ink: '#1d1d1f' },
+  { name: 'Night', stops: ['#000000', '#220301'], css: 'linear-gradient(180deg, #000 0%, #220301 100%)', ink: '#fff', note: 'A specialty background, on request.' },
+];
+const rules = [
+  ['Lead with red.', 'Charlotte Red and the red gradient do most of the work. Gold is a rare accent.'],
+  ['Run gradients top to bottom.', 'Both gradients read best vertically, light at the top.'],
+  ['Match the logo to the background.', 'Use the white-type and all-white logos on dark backgrounds only.'],
+  ['Leave it as drawn.', 'Don’t stretch, recolor, outline or add effects to the logos. Give them room to breathe.'],
+];
 ---
-<ComingSoon title="Branding" intro="Logos, colors and type for the club, ready to download." />
+<Base title="Branding" description="The Top End Club logos, colors and type, ready to download.">
+  <PageHeader eyebrow="Brand kit" title="Branding" intro="Logos, colors and type for the Top End Club. Everything here is free to use for club events, sponsors and press.">
+    <p class="bk-dl reveal" style="--reveal-delay:200ms">
+      <a class="button" href="/brand/Top-End-Club-Logos.zip" download>Download all logos</a>
+      <span class="t-caption t-tertiary">SVG and PNG, 2.3 MB</span>
+    </p>
+  </PageHeader>
+
+  <nav class="container bk-jump reveal" aria-label="On this page">
+    <a href="#logos">Logos</a><a href="#colors">Colors</a><a href="#type">Type</a><a href="#rules">Guidelines</a>
+  </nav>
+
+  <section class="section container" id="logos">
+    <h2 class="t-headline reveal">Logos</h2>
+    {groups.map((g) => (
+      <div class="bk-group">
+        <div class="bk-group__head reveal">
+          <h3 class="t-title-2">{g.title}</h3>
+          <p class="t-body t-secondary">{g.use}</p>
+        </div>
+        <ul class:list={['bk-logos', `bk-logos--${g.key}`]} role="list">
+          {g.items.map((it, i) => (
+            <li class="bk-logo card reveal" style={`--reveal-delay:${(i % 3) * 60}ms`}>
+              <div class:list={['bk-logo__stage', `is-${it.bg}`]}>
+                <img src={`/brand/${it.file}.svg`} alt={`Top End Club ${g.title.toLowerCase()}, ${it.label.toLowerCase()}`} loading="lazy" decoding="async" />
+              </div>
+              <div class="bk-logo__foot">
+                <p class="t-callout t-medium">{it.label}</p>
+                <p class="bk-logo__links">
+                  <a href={`/brand/${it.file}.svg`} download={`${it.name}.svg`}>SVG</a>
+                  <a href={`/brand/png/${it.file}.png`} download={`${it.name}.png`}>PNG</a>
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <section class="section section--surface" id="colors">
+    <div class="container">
+      <h2 class="t-headline reveal">Colors</h2>
+      <p class="t-body-large t-secondary bk-lead reveal">Tap a color to copy its hex code.</p>
+      <ul class="bk-colors" role="list">
+        {colors.map((c, i) => (
+          <li class="reveal" style={`--reveal-delay:${i * 60}ms`}>
+            <button class:list={['bk-swatch', { 'has-edge': c.edge }]} type="button" data-copy={c.hex} style={`--sw:${c.hex}; --ink:${c.ink}`}>
+              <span class="bk-swatch__chip"><span class="bk-swatch__copied" aria-hidden="true">Copied</span></span>
+              <span class="bk-swatch__name t-callout t-semibold">{c.name}</span>
+              <span class="bk-swatch__hex t-callout t-tabular">{c.hex}</span>
+              <span class="t-caption t-secondary">{c.note}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      <ul class="bk-grads" role="list">
+        {gradients.map((g, i) => (
+          <li class="bk-grad card reveal" style={`--reveal-delay:${i * 60}ms`}>
+            <div class="bk-grad__chip" style={`background:${g.css}; color:${g.ink}`}><span class="t-callout t-semibold">{g.name}</span></div>
+            <div class="bk-grad__stops">
+              {g.stops.map((s) => (
+                <button class="bk-stop t-caption t-tabular" type="button" data-copy={s}><i style={`background:${s}`}></i>{s}</button>
+              ))}
+            </div>
+            {g.note && <p class="t-caption t-tertiary bk-grad__note">{g.note}</p>}
+          </li>
+        ))}
+      </ul>
+      <p class="sr-only" aria-live="polite" data-copy-status></p>
+    </div>
+  </section>
+
+  <section class="section container" id="type">
+    <h2 class="t-headline reveal">Type</h2>
+    <div class="bk-type">
+      <article class="bk-face card reveal">
+        <p class="t-eyebrow">Headings</p>
+        <p class="bk-face__sample bk-face__sample--charlotte" aria-hidden="true">Top End</p>
+        <h3 class="t-title-3">Charlotte Italic</h3>
+        <p class="t-callout t-secondary">The wordmark face. Use it for big titles only, set in capitals, and keep it away from the logo itself. Charlotte Regular is for the rare spot where italic looks wrong.</p>
+      </article>
+      <article class="bk-face card reveal" style="--reveal-delay:80ms">
+        <p class="t-eyebrow">Everything else</p>
+        <p class="bk-face__sample bk-face__sample--avian" aria-hidden="true">Aa</p>
+        <h3 class="t-title-3">Avian Pro</h3>
+        <p class="t-callout t-secondary">Body text, subheads, buttons and captions. Tighter tracking on big sizes, a little looser on small ones.</p>
+        <p class="bk-face__weights" aria-hidden="true"><span style="font-weight:400">Regular</span><span style="font-weight:500">Medium</span><span style="font-weight:600">Semibold</span><span style="font-weight:700">Bold</span></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section section--surface" id="rules">
+    <div class="container">
+      <h2 class="t-headline reveal">Guidelines</h2>
+      <ol class="bk-rules" role="list">
+        {rules.map(([h, b], i) => (
+          <li class="reveal" style={`--reveal-delay:${i * 60}ms`}>
+            <span class="bk-rules__n t-tabular">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="t-title-3">{h}</h3>
+            <p class="t-callout t-secondary">{b}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+</Base>
+
+<script>
+  function initCopy() {
+    const status = document.querySelector<HTMLElement>('[data-copy-status]');
+    document.querySelectorAll<HTMLButtonElement>('[data-copy]:not([data-ready])').forEach((b) => {
+      b.dataset.ready = '';
+      b.addEventListener('click', async () => {
+        const v = b.dataset.copy!;
+        try { await navigator.clipboard.writeText(v); } catch { return; }
+        b.classList.add('is-copied');
+        if (status) status.textContent = `Copied ${v}`;
+        setTimeout(() => b.classList.remove('is-copied'), 1400);
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', initCopy);
+</script>
+
+<style>
+  .bk-dl { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 18px; margin-top: var(--space-6); }
+
+  .bk-jump {
+    position: sticky; top: calc(var(--nav-h) + 8px); z-index: 5; display: flex; gap: 6px; flex-wrap: wrap;
+    width: fit-content; margin-top: var(--space-8); padding: 5px; border-radius: var(--radius-full);
+    background: var(--glass); border: 1px solid var(--glass-border);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8); backdrop-filter: blur(20px) saturate(1.8);
+  }
+  .bk-jump a { padding: 6px 14px; border-radius: var(--radius-full); font-size: 14px; color: var(--text-2); }
+  .bk-jump a:hover { background: var(--surface); color: var(--text); text-decoration: none; }
+  [id] { scroll-margin-top: calc(var(--nav-h) + 72px); }
+
+  .bk-group { margin-top: var(--space-9); }
+  .bk-group__head { display: grid; gap: 4px; margin-bottom: var(--space-5); }
+  .bk-logos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; }
+  .bk-logos--icon, .bk-logos--wordmark { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .bk-logo { overflow: hidden; }
+  .bk-logo__stage { display: grid; place-items: center; height: 180px; padding: 28px; }
+  .bk-logo__stage.is-light { background: #fff; }
+  .bk-logo__stage.is-dark { background: #000; }
+  .bk-logos--horizontal .bk-logo__stage { height: 150px; }
+  .bk-logo__stage img { max-width: 100%; max-height: 100%; }
+  .bk-logos--vertical .bk-logo__stage img { max-height: 120px; }
+  .bk-logos--icon .bk-logo__stage img { max-height: 80px; }
+  .bk-logo__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-top: 1px solid var(--separator); }
+  .bk-logo__links { display: flex; gap: 6px; }
+  .bk-logo__links a {
+    padding: 4px 11px; border-radius: var(--radius-full); font-size: 13px; font-weight: 500;
+    background: var(--surface); color: var(--text);
+  }
+  .bk-logo__links a:hover { background: var(--accent); color: var(--accent-contrast); text-decoration: none; }
+
+  .bk-lead { margin-top: var(--space-2); }
+  .bk-colors { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: var(--space-7) 0 0; padding: 0; }
+  .bk-swatch {
+    display: grid; gap: 4px; width: 100%; padding: 0 0 18px; text-align: left; cursor: pointer;
+    font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden;
+    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease);
+  }
+  .bk-swatch:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .bk-swatch:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .bk-swatch > span:not(.bk-swatch__chip) { padding-inline: 18px; }
+  .bk-swatch__chip { position: relative; display: block; height: 128px; margin-bottom: 10px; background: var(--sw); }
+  .bk-swatch.has-edge .bk-swatch__chip { border-bottom: 1px solid var(--separator); }
+  .bk-swatch__hex { color: var(--text-2); }
+  .bk-swatch__copied {
+    position: absolute; inset: auto 12px 10px auto; font-size: 12px; font-weight: 600; color: var(--ink);
+    opacity: 0; transform: translateY(4px); transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease-out);
+  }
+  .bk-swatch.is-copied .bk-swatch__copied { opacity: 1; transform: none; }
+
+  .bk-grads { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 16px 0 0; padding: 0; }
+  .bk-grad { overflow: hidden; }
+  .bk-grad__chip { display: flex; align-items: flex-end; height: 160px; padding: 16px 18px; }
+  .bk-grad__stops { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 14px 4px; }
+  .bk-grad__note { padding: 4px 18px 0; }
+  .bk-grad { padding-bottom: 14px; }
+  .bk-stop {
+    position: relative; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 6px; cursor: pointer;
+    font: inherit; font-size: 12px; color: var(--text-2); background: var(--surface); border: 0; border-radius: var(--radius-full);
+  }
+  .bk-stop i { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12); }
+  .bk-stop:hover { color: var(--text); }
+  .bk-stop.is-copied { background: var(--accent); color: var(--accent-contrast); }
+
+  .bk-type { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: var(--space-7); }
+  .bk-face { display: grid; align-content: start; gap: 10px; padding: 32px; }
+  .bk-face__sample { margin: 8px 0 12px; line-height: 1; color: var(--text); }
+  .bk-face__sample--charlotte { font-family: var(--font-display); font-style: italic; text-transform: uppercase; font-size: clamp(64px, 8vw, 112px); color: var(--title-accent, var(--tec-red)); }
+  .bk-face__sample--avian { font-size: clamp(64px, 8vw, 112px); font-weight: 600; letter-spacing: -0.03em; }
+  .bk-face__weights { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 6px; font-size: 17px; }
+
+  .bk-rules { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; margin: var(--space-7) 0 0; padding: 0; }
+  .bk-rules li { display: grid; align-content: start; gap: 8px; }
+  .bk-rules__n { font-size: 13px; font-weight: 600; color: var(--accent); }
+
+  @media (max-width: 1068px) {
+    .bk-logos--icon, .bk-logos--wordmark { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bk-colors { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bk-rules { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 833px) {
+    .bk-logos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bk-grads, .bk-type { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .bk-logos, .bk-logos--icon, .bk-logos--wordmark { gap: 10px; }
+    .bk-logo__stage { height: 130px; padding: 18px; }
+    .bk-logos--horizontal .bk-logo__stage { height: 110px; }
+    .bk-logo__foot { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; }
+    .bk-colors { gap: 10px; }
+    .bk-swatch__chip { height: 96px; }
+    .bk-rules { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+    .bk-face { padding: 24px; }
+  }
+</style>
