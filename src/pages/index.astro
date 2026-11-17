@@ -1,19 +1,101 @@
 ---
 import Base from '../layouts/Base.astro';
+import EventCard from '../components/EventCard.astro';
 import site from '../data/site.json';
+import sponsors from '../data/sponsors.json';
+import { allEvents, styleFor, longDate, usd } from '../lib/events';
+
+const events = await allEvents();
+const latest = events[events.length - 1];
+const ls = styleFor(latest);
+const recent = events.slice(-4, -1).reverse();
+const years = latest.year - site.founded;
 ---
-<Base>
-  <section class="home-hero container">
-    <p class="t-eyebrow reveal">Since 2012</p>
-    <h1 class="t-charlotte t-charlotte--xl reveal" style="--reveal-delay: 60ms">Trackside<br />at zMAX</h1>
-    <p class="t-body-large t-secondary reveal" style="--reveal-delay: 140ms">A cookout for racers and their crews, and ${site.draw.total.toLocaleString('en-US')} given to D.R.A.W. so far.</p>
-    <p class="home-hero__links reveal" style="--reveal-delay: 220ms">
-      <a class="button" href="/events/">See the events</a>
-      <a class="link-chevron" href="/draw/">D.R.A.W. total</a>
-    </p>
+<Base description={`${site.name}: a trackside cookout at zMAX Dragway since ${site.founded}, raising money for D.R.A.W.`}>
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <p class="t-eyebrow reveal">zMAX Dragway · Concord, North Carolina</p>
+        <h1 class="t-charlotte hero__title reveal" style="--reveal-delay:60ms">Trackside<br />since 2012</h1>
+        <p class="t-body-large t-secondary hero__intro reveal" style="--reveal-delay:140ms">
+          After the race, the Top End Club cooks dinner for racers, crews and fans, and gives what it raises to D.R.A.W.
+        </p>
+        <p class="hero__links reveal" style="--reveal-delay:220ms">
+          <a class="button" href={`/events/${latest.id}/`}>{latest.season} {latest.year} event</a>
+          <a class="link-chevron" href="/events/">All events</a>
+        </p>
+      </div>
+      <a class="hero__flyer reveal reveal--scale" href={`/events/${latest.id}/`} style={`--reveal-delay:120ms; --ev-accent:${ls.accent}`} aria-label={`${latest.season} ${latest.year} event`}>
+        <img src={`/flyers/${latest.flyer}.jpg`} alt={`${latest.season} ${latest.year} event flyer`} width="971" height="1600" />
+      </a>
+    </div>
+  </section>
+
+  <section class="section--dark home-draw">
+    <div class="container t-center stat">
+      <p class="t-eyebrow reveal">Given to D.R.A.W. since {site.draw.since}</p>
+      <p class="stat__value reveal reveal--scale" style="--reveal-delay:80ms">{usd(site.draw.total)}</p>
+      <p class="stat__label reveal" style="--reveal-delay:160ms">Every dollar raised at the cookout goes to the Drag Racing Association of Women.</p>
+      <p class="reveal home-draw__links" style="--reveal-delay:220ms"><a class="link-chevron" href="/draw/">See the giving history</a></p>
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="home-head">
+      <h2 class="t-headline reveal">Recent events</h2>
+      <a class="link-chevron reveal" href="/events/#timeline">See all {events.length}</a>
+    </div>
+    <div class="grid grid--3 home-grid">
+      {recent.map((e, i) => <EventCard event={e} delay={i * 80} />)}
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container home-club">
+      <div class="tile home-club__tile reveal">
+        <p class="t-eyebrow">The club</p>
+        <h2 class="t-title-1">Started at zMAX Dragway in {site.founded}.</h2>
+        <p class="t-body t-secondary">Rodney Smith, Tim Ridge, Jerry Bishop and James Larson founded the Top End Club. {years} years later, they still run it, with Jimmy Pless and Gerald Bridges.</p>
+        <a class="link-chevron" href="/about/">About the club</a>
+      </div>
+      <div class="tile home-club__tile reveal" style="--reveal-delay:80ms">
+        <p class="t-eyebrow">Sponsors</p>
+        <h2 class="t-title-1">{sponsors.length} sponsors make every cookout possible.</h2>
+        <p class="t-body t-secondary">{sponsors.slice(0, -1).map((s) => s.name).join(', ')} and {sponsors[sponsors.length - 1].name}</p>
+        <a class="link-chevron" href="/sponsors/">Meet the sponsors</a>
+      </div>
+    </div>
   </section>
 </Base>
+
 <style>
-  .home-hero { padding-block: clamp(64px, 12vw, 160px); display: grid; gap: var(--space-5); }
-  .home-hero__links { display: flex; align-items: center; gap: var(--space-6); margin-top: var(--space-3); flex-wrap: wrap; }
+  .hero { padding-block: clamp(48px, 8vw, 112px) clamp(56px, 8vw, 120px); overflow: hidden; }
+  .hero__inner { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(32px, 6vw, 88px); align-items: center; }
+  .hero__text { display: grid; gap: var(--space-5); }
+  .hero__title { font-size: clamp(56px, 9vw, 120px); }
+  .hero__intro { max-width: 520px; }
+  .hero__links { display: flex; align-items: center; gap: var(--space-6); flex-wrap: wrap; margin-top: var(--space-2); }
+  .hero__flyer { display: block; justify-self: center; max-width: 380px; }
+  .hero__flyer img {
+    border-radius: var(--radius-lg);
+    box-shadow: 0 30px 60px -20px color-mix(in srgb, var(--ev-accent) 45%, transparent), var(--shadow-lg);
+    transform: rotate(2deg);
+    transition: transform var(--dur-emph) var(--ease-out);
+  }
+  .hero__flyer:hover img { transform: rotate(0deg) translateY(-6px); }
+
+  .home-draw { padding-block: clamp(72px, 10vw, 128px); }
+  .home-draw .stat__label { max-width: 520px; margin-inline: auto; }
+  .home-draw__links { margin-top: var(--space-6); }
+
+  .home-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .home-grid { margin-top: var(--space-8); }
+
+  .home-club { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: var(--space-5); }
+  .home-club__tile { display: grid; gap: var(--space-4); align-content: start; background: var(--elevated); border: 1px solid var(--card-border); }
+
+  @media (max-width: 833px) {
+    .hero__inner { grid-template-columns: 1fr; }
+    .hero__flyer { max-width: 260px; justify-self: start; }
+  }
 </style>

@@ -1,0 +1,106 @@
+---
+import Base from '../../layouts/Base.astro';
+import { allEvents, styleFor, shortDate, raisedText, usd, type Ev } from '../../lib/events';
+import BorrowedPoster from '../../components/BorrowedPoster.astro';
+
+export async function getStaticPaths() {
+  const events = await allEvents();
+  return events.map((e, i) => ({ params: { id: e.id }, props: { e, prev: events[i - 1] ?? null, next: events[i + 1] ?? null } }));
+}
+interface Props { e: Ev; prev: Ev | null; next: Ev | null }
+const { e, prev, next } = Astro.props;
+const s = styleFor(e);
+const raised = raisedText(e);
+const title = `${e.season} ${e.year}`;
+const facts = [
+  { label: 'Date', value: shortDate(e.date) },
+  { label: 'Where', value: 'zMAX Dragway' },
+  ...(raised ? [{ label: 'Raised for D.R.A.W.', value: raised }] : []),
+  ...(e.totalAfter ? [{ label: 'D.R.A.W. total after', value: usd(e.totalAfter) }] : []),
+];
+---
+<Base title={title} crumb="Events" description={`${title} at zMAX Dragway: ${e.name}.`}>
+  <section class:list={['ev-hero', { 'is-dark': s.dark }]} style={`--ev-accent:${s.accent}; --ev-bg:${s.bg}`}>
+    <div class="container ev-hero__inner">
+      <div class="ev-hero__text">
+        <p class="t-eyebrow ev-hero__eyebrow reveal"><a href="/events/">Events</a></p>
+        <h1 class="t-charlotte t-charlotte--xl reveal" style="--reveal-delay:60ms">{e.season}<br />{e.year}</h1>
+        <p class="t-body-large ev-hero__name reveal" style="--reveal-delay:120ms">{e.name}</p>
+        {e.private && <p class="reveal" style="--reveal-delay:160ms"><span class="badge ev-hero__badge">Private event</span></p>}
+      </div>
+      <div class="ev-hero__art reveal reveal--scale" style="--reveal-delay:140ms">
+        {e.flyer ? (
+          <a href={`/flyers/${e.flyer}.jpg`} class="ev-hero__flyer" aria-label="Open the full flyer">
+            <img src={`/flyers/${e.flyer}.jpg`} alt={`${title} event flyer`} />
+          </a>
+        ) : (
+          <div class="ev-hero__poster"><BorrowedPoster event={e} size="lg" /></div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight container">
+    <dl class="facts">
+      {facts.map((f, i) => (
+        <div class="facts__item reveal" style={`--reveal-delay:${i * 60}ms`}>
+          <dt class="t-caption t-secondary">{f.label}</dt>
+          <dd class="t-title-3 t-tabular">{f.value}</dd>
+        </div>
+      ))}
+    </dl>
+    {e.notes && <p class="t-body-large ev-notes reveal">{e.notes}</p>}
+    {!e.flyer && <p class="t-caption t-tertiary ev-borrowed reveal">There was no flyer for this event, so this page borrows the look of a neighboring year's flyer.</p>}
+  </section>
+
+  <nav class="container ev-pager" aria-label="More events">
+    {prev ? <a class="card ev-pager__link" href={`/events/${prev.id}/`}><span class="t-caption t-secondary">Previous</span><span class="t-body t-semibold">{prev.season} {prev.year}</span></a> : <span />}
+    {next ? <a class="card ev-pager__link ev-pager__link--next" href={`/events/${next.id}/`}><span class="t-caption t-secondary">Next</span><span class="t-body t-semibold">{next.season} {next.year}</span></a> : <span />}
+  </nav>
+</Base>
+
+<style>
+  .ev-hero {
+    padding-block: clamp(40px, 7vw, 96px);
+    background:
+      radial-gradient(90% 120% at 0% 0%, color-mix(in srgb, var(--ev-accent) 18%, transparent), transparent 65%),
+      linear-gradient(180deg, color-mix(in srgb, var(--ev-accent) 6%, var(--bg)) 0%, var(--bg) 100%);
+  }
+  .ev-hero.is-dark {
+    background: linear-gradient(170deg, var(--ev-bg) 0%, color-mix(in srgb, var(--ev-bg) 40%, #000) 100%);
+    color: #f5f5f7;
+    --text: #f5f5f7; --text-2: rgba(255,255,255,0.75); --accent: #fff;
+  }
+  .ev-hero__inner { display: grid; grid-template-columns: 1fr minmax(0, 400px); gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .ev-hero__text { display: grid; gap: 16px; }
+  .ev-hero__eyebrow a { color: var(--ev-accent); }
+  .ev-hero.is-dark .ev-hero__eyebrow a { color: #fff; opacity: 0.85; }
+  .ev-hero h1 { color: var(--text); }
+  .ev-hero__name { color: var(--text-2); }
+  .ev-hero__badge { background: color-mix(in srgb, var(--ev-accent) 14%, transparent); color: var(--text); }
+  .ev-hero__flyer { display: block; }
+  .ev-hero__flyer img, .ev-hero__poster {
+    width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+    transition: transform var(--dur-emph) var(--ease-out);
+  }
+  .ev-hero__flyer:hover img { transform: translateY(-4px); }
+  .ev-hero__poster {
+    aspect-ratio: 8.5 / 11;
+    overflow: hidden; border: 1px solid var(--card-border);
+  }
+
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: var(--space-5); margin: 0; }
+  .facts__item { padding-top: 16px; border-top: 2px solid var(--text); }
+  .facts dd { margin: 6px 0 0; }
+  .ev-notes { margin-top: var(--space-8); max-width: 720px; color: var(--text-2); }
+  .ev-borrowed { margin-top: var(--space-5); }
+
+  .ev-pager { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); padding-bottom: var(--section-pad); }
+  .ev-pager__link { display: grid; gap: 2px; padding: 20px 24px; }
+  .ev-pager__link--next { text-align: right; }
+
+  @media (max-width: 833px) {
+    .ev-hero__inner { grid-template-columns: 1fr; }
+    .ev-hero__art { max-width: 320px; }
+  }
+</style>

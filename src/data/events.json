@@ -6,7 +6,7 @@
     "date": "2012-04-14",
     "name": "After the race cookout",
     "notes": "The first Top End Club, trackside past the quarter-mile mark.",
-    "flyer": "TEC_2012_1_Flyer.png"
+    "flyer": "2012_1"
   },
   {
     "id": "2012-fall",
@@ -15,7 +15,7 @@
     "date": "2012-09-15",
     "name": "After the race cookout",
     "notes": "",
-    "flyer": "TEC_2012_2_Flyer.png"
+    "flyer": "2012_2"
   },
   {
     "id": "2013-spring",
@@ -24,7 +24,7 @@
     "date": "2013-04-20",
     "name": "After the race cookout",
     "notes": "",
-    "flyer": "TEC_2013_1_Flyer.png"
+    "flyer": "2013_1"
   },
   {
     "id": "2013-fall",
@@ -33,7 +33,7 @@
     "date": "2013-09-14",
     "name": "After the race cookout",
     "notes": "",
-    "flyer": "TEC_2013_2_Flyer.png"
+    "flyer": "2013_2"
   },
   {
     "id": "2014-spring",
@@ -42,7 +42,7 @@
     "date": "2014-04-12",
     "name": "After the race cookout",
     "notes": "",
-    "flyer": "TEC_2014_1_Flyer.png"
+    "flyer": "2014_1"
   },
   {
     "id": "2014-fall",
@@ -51,7 +51,7 @@
     "date": "2014-09-13",
     "name": "After the race cookout",
     "notes": "",
-    "flyer": "TEC_2014_2_Flyer.png"
+    "flyer": "2014_2"
   },
   {
     "id": "2015-spring",
@@ -60,7 +60,7 @@
     "date": "2015-03-28",
     "name": "Chicken Stew & Barbeque",
     "notes": "",
-    "flyer": "TEC_2015_1.png"
+    "flyer": "2015_1"
   },
   {
     "id": "2015-fall",
@@ -69,7 +69,7 @@
     "date": "2015-09-19",
     "name": "Countdown Cookout",
     "notes": "",
-    "flyer": "TEC_2015_2.png"
+    "flyer": "2015_2"
   },
   {
     "id": "2016-spring",
@@ -80,7 +80,7 @@
     "notes": "The first event to raise money for D.R.A.W., in honor of two friends lost that spring.",
     "raised": 1460,
     "totalAfter": 1460,
-    "flyer": "TEC_2016_1.png"
+    "flyer": "2016_1"
   },
   {
     "id": "2016-fall",
@@ -91,7 +91,7 @@
     "notes": "The club was named D.R.A.W.'s 2016 Organization of the Year.",
     "raised": 1425,
     "totalAfter": 2885,
-    "flyer": "TEC_2016_2.jpg"
+    "flyer": "2016_2"
   },
   {
     "id": "2017-spring",
@@ -100,7 +100,7 @@
     "date": "2017-04-29",
     "name": "Spring Benefit Barbeque",
     "notes": "",
-    "flyer": "TEC_2017_1.jpg"
+    "flyer": "2017_1"
   },
   {
     "id": "2017-fall",
@@ -109,7 +109,7 @@
     "date": "2017-09-16",
     "name": "Fall Benefit Barbeque",
     "notes": "",
-    "flyer": "TEC_2017_2.jpg"
+    "flyer": "2017_2"
   },
   {
     "id": "2018-spring",
@@ -118,7 +118,7 @@
     "date": "2018-04-28",
     "name": "Spring Benefit Barbeque",
     "notes": "A new home: the Sportsman pits, sites 13 and 14.",
-    "flyer": "TEC_2018_1.png"
+    "flyer": "2018_1"
   },
   {
     "id": "2018-fall",
@@ -128,7 +128,7 @@
     "name": "Fall Benefit Barbeque",
     "notes": "Hurricane Michael weekend.",
     "raised": 1724,
-    "flyer": "TEC_2018_2.jpg"
+    "flyer": "2018_2"
   },
   {
     "id": "2019-spring",
@@ -138,7 +138,7 @@
     "name": "Spring Benefit Barbeque",
     "notes": "",
     "totalAfter": 12582,
-    "flyer": "TEC_2019_1.jpg"
+    "flyer": "2019_1"
   },
   {
     "id": "2019-fall",
@@ -150,7 +150,7 @@
     "raised": 2560,
     "totalAfter": 15142,
     "raisedIsEstimate": true,
-    "flyer": "TEC_2019_2.jpg"
+    "flyer": "2019_2"
   },
   {
     "id": "2021-spring",
@@ -183,7 +183,7 @@
     "notes": "A record night at the time.",
     "raised": 3510,
     "totalAfter": 23555,
-    "flyer": "TEC_2022_1.png"
+    "flyer": "2022_1"
   },
   {
     "id": "2022-fall",
@@ -194,7 +194,7 @@
     "notes": "",
     "raised": 2665,
     "totalAfter": 26220,
-    "flyer": "TEC_2022_2.png"
+    "flyer": "2022_2"
   },
   {
     "id": "2023-spring",
@@ -206,7 +206,7 @@
     "raised": 5158,
     "totalAfter": 31378,
     "raisedIsEstimate": true,
-    "flyer": "TEC_2023_1_flyer.png"
+    "flyer": "2023_1"
   },
   {
     "id": "2023-fall",
@@ -217,7 +217,7 @@
     "notes": "The Rockaholics, Jimmy Freeman and Sammy Eubanks.",
     "raised": 4400,
     "totalAfter": 35778,
-    "flyer": "TEC_2023_2_flyer.png"
+    "flyer": "2023_2"
   },
   {
     "id": "2024-spring",
@@ -228,7 +228,7 @@
     "notes": "",
     "raised": 6105,
     "totalAfter": 41883,
-    "flyer": "TEC_2024_1_flyer.png"
+    "flyer": "2024_1"
   },
   {
     "id": "2024-fall",
@@ -239,7 +239,7 @@
     "notes": "Given in memory of Rosalee Noble.",
     "raised": 8880,
     "totalAfter": 50763,
-    "flyer": "TEC_2024_2_flyer.png"
+    "flyer": "2024_2"
   },
   {
     "id": "2025-spring",
@@ -250,7 +250,7 @@
     "notes": "The first live auction after dinner.",
     "raised": 8300,
     "totalAfter": 59063,
-    "flyer": "TEC_2025_1_flyer.jpg"
+    "flyer": "2025_1"
   },
   {
     "id": "2025-fall",
@@ -262,7 +262,7 @@
     "raised": 29350,
     "totalAfter": 88413,
     "raisedIsEstimate": true,
-    "flyer": "TEC_2025_2_Flyer.png"
+    "flyer": "2025_2"
   },
   {
     "id": "2026-spring",
@@ -273,6 +273,6 @@
     "notes": "The only event of 2026. The all-time total passed $100,000.",
     "raised": 11592,
     "totalAfter": 100005,
-    "flyer": "TEC_2026.1_Flyer.tiff"
+    "flyer": "2026_1"
   }
 ]

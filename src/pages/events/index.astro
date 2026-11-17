@@ -1,4 +1,88 @@
 ---
-import ComingSoon from '../../components/ComingSoon.astro';
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import EventCard from '../../components/EventCard.astro';
+import { allEvents, styleFor, longDate, raisedText } from '../../lib/events';
+
+const events = await allEvents();
+const latest = events[events.length - 1];
+const ls = styleFor(latest);
+const first = events[0].year;
+const years = Array.from({ length: latest.year - first + 1 }, (_, i) => latest.year - i);
 ---
-<ComingSoon title="Events" intro="Every spring and fall since 2012, trackside at zMAX Dragway." />
+<Base title="Events" description={`Every Top End Club event since ${first}, trackside at zMAX Dragway.`}>
+  <PageHeader eyebrow="Trackside at zMAX Dragway" title="Events" intro={`${events.length} cookouts since ${first}. Spring and fall every year through 2025, and from 2026, one big spring event each year.`} />
+
+  <section class="container">
+    <a class:list={['latest card reveal', { 'is-dark': ls.dark }]} href={`/events/${latest.id}/`} style={`--ev-accent:${ls.accent}; --ev-bg:${ls.bg}`}>
+      <div class="latest__text">
+        <p class="t-eyebrow latest__eyebrow">Latest event</p>
+        <h2 class="t-charlotte t-charlotte--lg">{latest.season} {latest.year}</h2>
+        <p class="t-body-large latest__date">{longDate(latest.date)}</p>
+        {raisedText(latest) && <p class="t-body latest__raised t-tabular">{raisedText(latest)} raised for D.R.A.W.</p>}
+        <span class="link-chevron latest__link">See the event</span>
+      </div>
+      <div class="latest__art">
+        <img src={`/flyers/${latest.flyer}.jpg`} alt={`${latest.season} ${latest.year} event flyer`} width="971" height="1600" />
+      </div>
+    </a>
+  </section>
+
+  <section class="section container" id="timeline">
+    <h2 class="t-headline reveal">Every event</h2>
+    <div class="timeline">
+      {years.map((y) => {
+        const list = events.filter((e) => e.year === y).reverse();
+        return (
+          <div class="timeline__year" id={`y${y}`}>
+            <h3 class="timeline__y t-title-1 t-tabular reveal">{y}</h3>
+            {list.length ? (
+              <div class="timeline__cards">
+                {list.map((e, i) => <EventCard event={e} delay={i * 80} />)}
+              </div>
+            ) : (
+              <p class="t-body t-secondary timeline__none reveal">No events in {y} because of COVID-19.</p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .latest {
+    display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; gap: 0;
+    background:
+      radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--ev-accent) 16%, transparent), transparent 60%),
+      var(--card);
+    color: var(--text);
+  }
+  .latest.is-dark { background: linear-gradient(160deg, var(--ev-bg) 0%, color-mix(in srgb, var(--ev-bg) 45%, #000) 100%); color: #f5f5f7; }
+  .latest.is-dark .latest__eyebrow, .latest.is-dark .latest__link { color: #fff; }
+  .latest.is-dark .latest__date, .latest.is-dark .latest__raised { color: rgba(255, 255, 255, 0.78); }
+  .latest__text { display: grid; gap: 12px; align-content: center; padding: clamp(28px, 5vw, 64px); }
+  .latest__date { color: var(--text-2); }
+  .latest__raised { color: var(--text-2); }
+  .latest__link { margin-top: 8px; color: var(--accent); }
+  .latest__art { align-self: stretch; padding: clamp(20px, 3vw, 40px); display: grid; place-items: center; }
+  .latest__art img { max-height: 520px; width: auto; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); transition: transform var(--dur-emph) var(--ease-out); }
+  a.latest:hover .latest__art img { transform: translateY(-4px) rotate(-1deg); }
+
+  .timeline { margin-top: var(--space-8); }
+  .timeline__year { display: grid; grid-template-columns: 140px 1fr; gap: 24px; padding-block: 32px; border-top: 1px solid var(--separator); scroll-margin-top: 80px; }
+  .timeline__y { position: sticky; top: calc(var(--nav-h) + 24px); align-self: start; }
+  .timeline__cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+  .timeline__none { padding-top: 10px; }
+
+  @media (max-width: 833px) {
+    .latest { grid-template-columns: 1fr; }
+    .latest__art { order: -1; padding-bottom: 0; }
+    .latest__art img { max-height: 360px; }
+    .timeline__year { grid-template-columns: 1fr; gap: 16px; }
+    .timeline__y { position: static; }
+  }
+  @media (max-width: 480px) {
+    .timeline__cards { gap: 12px; }
+  }
+</style>
