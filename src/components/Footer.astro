@@ -1,0 +1,158 @@
+---
+// Apple.com-style footer directory. Sponsor names live here too, as Austin asked.
+import site from '../data/site.json';
+import sponsors from '../data/sponsors.json';
+
+interface Props { crumb?: string }
+const { crumb } = Astro.props;
+const year = new Date().getFullYear();
+
+const columns = [
+  {
+    title: 'Events',
+    links: [
+      { label: 'All Events', href: '/events/' },
+      { label: 'Spring 2026', href: '/events/2026-spring/' },
+      { label: 'Event Timeline', href: '/events/#timeline' },
+    ],
+  },
+  {
+    title: 'D.R.A.W.',
+    links: [
+      { label: 'Total to Date', href: '/draw/' },
+      { label: 'Giving History', href: '/draw/#history' },
+      { label: 'About D.R.A.W.', href: site.draw.url, external: true },
+    ],
+  },
+  {
+    title: 'News',
+    links: [
+      { label: 'Latest News', href: '/news/' },
+      { label: 'After the Event', href: '/news/#after-the-event' },
+      { label: 'From the Club', href: '/news/#club' },
+    ],
+  },
+  {
+    title: 'Sponsors',
+    links: [
+      ...sponsors.map((s) => ({ label: s.name, href: `/sponsors/#${s.order}` })),
+    ],
+  },
+  {
+    title: 'The Club',
+    links: [
+      { label: 'About', href: '/about/' },
+      { label: 'Founders & Leaders', href: '/about/#leaders' },
+      { label: 'Branding', href: '/branding/' },
+      { label: 'Facebook Group', href: site.facebookGroup, external: true },
+    ],
+  },
+];
+---
+<footer class="footer">
+  <div class="footer__inner">
+    <p class="footer__note">
+      D.R.A.W. total of ${site.draw.total.toLocaleString('en-US')} counts every dollar the club has given since {site.draw.since}, as of the {site.draw.asOf}.
+      Unknown amounts from a few early events are not included.
+    </p>
+
+    <nav class="footer__crumbs" aria-label="Breadcrumb">
+      <a class="footer__crumb-home" href="/" aria-label="The Top End Club"><span aria-hidden="true"></span></a>
+      {crumb && <span class="footer__crumb">{crumb}</span>}
+    </nav>
+
+    <div class="footer__directory">
+      {columns.map((col) => (
+        <details class="footer__col" open>
+          <summary class="footer__col-title">{col.title}</summary>
+          <ul role="list">
+            {col.links.map((l) => (
+              <li>
+                <a href={l.href} {...(l.external ? { rel: 'noopener', target: '_blank' } : {})}>{l.label}</a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ))}
+    </div>
+
+    <div class="footer__legal">
+      <p>© 2012–{year} {site.name}. All rights reserved.</p>
+      <p>{site.location}</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Columns are open on desktop and collapse into accordions on phones.
+  const mq = window.matchMedia('(max-width: 833px)');
+  const sync = () => document.querySelectorAll<HTMLDetailsElement>('.footer__col').forEach((d) => (d.open = !mq.matches));
+  sync();
+  mq.addEventListener('change', sync);
+  document.addEventListener('astro:page-load', sync);
+</script>
+
+<style>
+  .footer {
+    background: var(--surface);
+    color: var(--text-2);
+    font-size: 12px;
+    line-height: 1.33337;
+    letter-spacing: -0.01em;
+  }
+  .footer__inner { width: min(980px, 100% - var(--gutter) * 2); margin-inline: auto; padding-block: 17px 21px; }
+
+  .footer__note { padding-bottom: 11px; border-bottom: 1px solid var(--separator); color: var(--text-3); }
+
+  .footer__crumbs { display: flex; align-items: center; gap: 0; padding-block: 12px 4px; }
+  .footer__crumb-home { display: inline-flex; opacity: 0.8; }
+  .footer__crumb-home:hover { opacity: 1; }
+  .footer__crumb-home span {
+    display: block; width: 24px; height: 14px; background: var(--text);
+    -webkit-mask: url('/brand/TEC_ICON_BLACK.svg') center / contain no-repeat;
+    mask: url('/brand/TEC_ICON_BLACK.svg') center / contain no-repeat;
+  }
+  .footer__crumb { display: inline-flex; align-items: center; color: var(--text); }
+  .footer__crumb::before {
+    content: ''; width: 6px; height: 6px; margin: 0 10px 0 9px;
+    border-right: 1px solid var(--text-3); border-top: 1px solid var(--text-3);
+    transform: rotate(45deg);
+  }
+
+  .footer__directory { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; padding-block: 16px 28px; }
+  .footer__col-title {
+    list-style: none; cursor: default;
+    color: var(--text); font-weight: 600; margin-bottom: 0.8em;
+  }
+  .footer__col-title::-webkit-details-marker { display: none; }
+  .footer__col ul { margin: 0; }
+  .footer__col li + li { margin-top: 0.8em; }
+  .footer__col a { color: var(--text-2); }
+  .footer__col a:hover { color: var(--text); text-decoration: underline; }
+
+  .footer__legal {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px;
+    padding-top: 12px; border-top: 1px solid var(--separator); color: var(--text-3);
+  }
+
+  @media (max-width: 833px) {
+    .footer__inner { padding-bottom: 28px; }
+    .footer__directory { display: block; padding-block: 4px 16px; }
+    .footer__col { border-bottom: 1px solid var(--separator); }
+    .footer__col-title {
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 0; padding-block: 11px; font-size: 14px; font-weight: 400; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .footer__col-title::after {
+      content: ''; width: 7px; height: 7px; margin-right: 4px;
+      border-right: 1.5px solid var(--text-2); border-bottom: 1.5px solid var(--text-2);
+      transform: translateY(-2px) rotate(45deg);
+      transition: transform var(--dur) var(--ease);
+    }
+    .footer__col[open] .footer__col-title::after { transform: translateY(2px) rotate(-135deg); }
+    .footer__col ul { padding: 0 0 14px 14px; }
+    .footer__col a { font-size: 14px; }
+    .footer__legal { flex-direction: column; border-top: 0; }
+  }
+</style>

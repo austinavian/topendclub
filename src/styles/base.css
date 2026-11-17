@@ -1,0 +1,245 @@
+/* ==========================================================================
+   Base: reset, type scale, layout primitives, components, motion
+   ========================================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.47059;
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  font-variation-settings: "opsz" var(--opsz-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-synthesis: none;
+}
+
+img, svg, video { display: block; max-width: 100%; height: auto; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 0.18em; }
+:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: 6px; }
+h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+button { font: inherit; color: inherit; }
+::selection { background: rgba(137, 21, 17, 0.18); }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Type scale. Sizes, tracking and leading follow Apple's SF Pro settings,
+   since Avian Pro shares its metrics. Text cut below 20px, Display cut above.
+   -------------------------------------------------------------------------- */
+
+.t-hero,
+.t-display,
+.t-headline,
+.t-title-1,
+.t-title-2,
+.t-title-3,
+.t-body-large { font-variation-settings: "opsz" var(--opsz-display); }
+
+.t-hero      { font-size: clamp(48px, 7.2vw, 96px); line-height: 1.04;  font-weight: 700; letter-spacing: -0.015em; }
+.t-display   { font-size: clamp(40px, 5.6vw, 64px); line-height: 1.0625; font-weight: 700; letter-spacing: -0.009em; }
+.t-headline  { font-size: clamp(32px, 4.2vw, 48px); line-height: 1.0834; font-weight: 600; letter-spacing: -0.003em; }
+.t-title-1   { font-size: clamp(28px, 3.2vw, 40px); line-height: 1.1;   font-weight: 600; letter-spacing: 0em; }
+.t-title-2   { font-size: clamp(24px, 2.6vw, 32px); line-height: 1.125; font-weight: 600; letter-spacing: 0.004em; }
+.t-title-3   { font-size: clamp(21px, 2vw, 24px);   line-height: 1.1667; font-weight: 600; letter-spacing: 0.009em; }
+.t-body-large{ font-size: clamp(19px, 1.7vw, 21px); line-height: 1.381; font-weight: 400; letter-spacing: 0.011em; }
+.t-body      { font-size: 17px; line-height: 1.4706; font-weight: 400; letter-spacing: -0.022em; }
+.t-callout   { font-size: 14px; line-height: 1.4286; font-weight: 400; letter-spacing: -0.016em; }
+.t-caption   { font-size: 12px; line-height: 1.3334; font-weight: 400; letter-spacing: -0.01em; }
+.t-eyebrow   { font-size: 14px; line-height: 1.2857; font-weight: 600; letter-spacing: -0.016em; color: var(--accent); }
+
+.t-secondary { color: var(--text-2); }
+.t-tertiary  { color: var(--text-3); }
+.t-accent    { color: var(--accent); }
+.t-medium    { font-weight: 500; }
+.t-semibold  { font-weight: 600; }
+.t-center    { text-align: center; }
+.t-balance   { text-wrap: balance; }
+.t-pretty    { text-wrap: pretty; }
+.t-tabular   { font-variant-numeric: tabular-nums; }
+
+/* Charlotte: the club's heading face. Italic by default, used sparingly,
+   never next to the wordmark. Always uppercase, always tight. */
+.t-charlotte {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  line-height: 0.92;
+  font-variation-settings: normal;
+}
+.t-charlotte--upright { font-style: normal; }
+.t-charlotte--xl { font-size: clamp(56px, 10vw, 136px); }
+.t-charlotte--lg { font-size: clamp(44px, 7vw, 88px); }
+.t-charlotte--md { font-size: clamp(32px, 4.4vw, 56px); }
+
+/* --------------------------------------------------------------------------
+   Layout
+   -------------------------------------------------------------------------- */
+
+.container { width: min(var(--content), 100% - var(--gutter) * 2); margin-inline: auto; }
+.container--wide { width: min(var(--wide), 100% - var(--gutter) * 2); margin-inline: auto; }
+.container--text { width: min(692px, 100% - var(--gutter) * 2); margin-inline: auto; }
+
+.section { padding-block: var(--section-pad); }
+.section--surface { background: var(--surface); }
+.section--tight { padding-block: clamp(40px, 6vw, 72px); }
+.section--dark {
+  /* "Specialty" background from the brand guide: black to deep red, vertical */
+  background: linear-gradient(180deg, #000000 0%, #220301 100%);
+  color: #f5f5f7;
+  --text: #f5f5f7;
+  --text-2: #a1a1a6;
+  --accent: #e5483d;
+  --card-border: rgba(255, 255, 255, 0.1);
+}
+
+.stack > * + * { margin-top: var(--stack, var(--space-4)); }
+.grid { display: grid; gap: var(--grid-gap, var(--space-5)); }
+.grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); }
+.grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.grid--4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); }
+
+main { display: block; }
+
+/* --------------------------------------------------------------------------
+   Page header: eyebrow, large title, intro. The title is the one place a
+   page usually gets Charlotte.
+   -------------------------------------------------------------------------- */
+
+.page-header { padding-top: clamp(40px, 7vw, 88px); padding-bottom: clamp(32px, 5vw, 64px); }
+.page-header__eyebrow { margin-bottom: var(--space-3); }
+.page-header__title { color: var(--text); }
+.page-header__intro { margin-top: var(--space-5); max-width: 640px; color: var(--text-2); }
+
+/* --------------------------------------------------------------------------
+   Links and buttons
+   -------------------------------------------------------------------------- */
+
+.link-chevron { display: inline-flex; align-items: baseline; gap: 0.18em; font-weight: 400; }
+.link-chevron::after {
+  content: "";
+  width: 0.42em; height: 0.42em;
+  border-right: 0.11em solid currentColor;
+  border-top: 0.11em solid currentColor;
+  transform: translateY(-0.08em) rotate(45deg);
+  transition: transform var(--dur) var(--ease);
+}
+.link-chevron:hover { text-decoration: underline; }
+.link-chevron:hover::after { transform: translate(0.14em, -0.08em) rotate(45deg); }
+
+.button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 11px 22px;
+  border-radius: var(--radius-full); border: 1px solid transparent;
+  font-size: 17px; line-height: 1.17648; font-weight: 400; letter-spacing: -0.022em;
+  background: var(--accent); color: var(--accent-contrast);
+  cursor: pointer; text-decoration: none;
+  transition: background-color var(--dur) var(--ease), transform var(--dur-micro) var(--ease), color var(--dur) var(--ease);
+}
+.button:hover { background: var(--accent-hover); text-decoration: none; }
+.button:active { transform: scale(0.97); }
+.button--secondary { background: transparent; color: var(--accent); border-color: var(--accent); }
+.button--secondary:hover { background: var(--accent); color: var(--accent-contrast); }
+.button--quiet { background: var(--surface); color: var(--text); }
+.button--quiet:hover { background: var(--separator); }
+.button--small { min-height: 32px; padding: 6px 15px; font-size: 14px; letter-spacing: -0.016em; }
+
+/* --------------------------------------------------------------------------
+   Cards: background step + hairline + shadow, so they read in both themes
+   -------------------------------------------------------------------------- */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform var(--dur-emph) var(--ease-out), box-shadow var(--dur-emph) var(--ease-out);
+}
+.section--surface .card { background: var(--elevated); }
+a.card { color: inherit; text-decoration: none; display: block; }
+a.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.card__body { padding: clamp(24px, 3vw, 36px); }
+
+.tile {
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  padding: clamp(28px, 4vw, 48px);
+}
+
+.hairline { height: 1px; background: var(--separator); border: 0; margin: 0; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: var(--radius-full);
+  font-size: 12px; line-height: 1.33; font-weight: 600; letter-spacing: -0.01em;
+  background: rgba(137, 21, 17, 0.08); color: var(--accent);
+}
+
+/* Big number, used for the D.R.A.W. total */
+.stat { font-variation-settings: "opsz" var(--opsz-display); font-variant-numeric: tabular-nums; }
+.stat__value { font-size: clamp(56px, 9vw, 120px); line-height: 1; font-weight: 700; letter-spacing: -0.02em; }
+.stat__label { margin-top: var(--space-3); font-size: 17px; color: var(--text-2); }
+
+/* --------------------------------------------------------------------------
+   Motion. Content rises 24px and fades in as it enters the viewport, once.
+   Nothing moves when the visitor asks for reduced motion.
+   -------------------------------------------------------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+.reveal--scale { transform: scale(0.96); }
+.reveal--scale.is-visible { transform: none; }
+
+html:not(.js) .reveal { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* Gentle cross-fade between pages (View Transitions) */
+@keyframes tec-fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes tec-fade-out { to { opacity: 0; } }
+::view-transition-old(main) { animation: tec-fade-out 180ms var(--ease) both; }
+::view-transition-new(main) { animation: tec-fade-in 420ms var(--ease-out) both; }
+
+/* Leave room for the mobile tab bar */
+@media (max-width: 833px) {
+  body { padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom)); }
+}

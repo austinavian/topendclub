@@ -1,0 +1,278 @@
+[
+  {
+    "id": "2012-spring",
+    "year": 2012,
+    "season": "Spring",
+    "date": "2012-04-14",
+    "name": "After the race cookout",
+    "notes": "The first Top End Club, trackside past the quarter-mile mark.",
+    "flyer": "TEC_2012_1_Flyer.png"
+  },
+  {
+    "id": "2012-fall",
+    "year": 2012,
+    "season": "Fall",
+    "date": "2012-09-15",
+    "name": "After the race cookout",
+    "notes": "",
+    "flyer": "TEC_2012_2_Flyer.png"
+  },
+  {
+    "id": "2013-spring",
+    "year": 2013,
+    "season": "Spring",
+    "date": "2013-04-20",
+    "name": "After the race cookout",
+    "notes": "",
+    "flyer": "TEC_2013_1_Flyer.png"
+  },
+  {
+    "id": "2013-fall",
+    "year": 2013,
+    "season": "Fall",
+    "date": "2013-09-14",
+    "name": "After the race cookout",
+    "notes": "",
+    "flyer": "TEC_2013_2_Flyer.png"
+  },
+  {
+    "id": "2014-spring",
+    "year": 2014,
+    "season": "Spring",
+    "date": "2014-04-12",
+    "name": "After the race cookout",
+    "notes": "",
+    "flyer": "TEC_2014_1_Flyer.png"
+  },
+  {
+    "id": "2014-fall",
+    "year": 2014,
+    "season": "Fall",
+    "date": "2014-09-13",
+    "name": "After the race cookout",
+    "notes": "",
+    "flyer": "TEC_2014_2_Flyer.png"
+  },
+  {
+    "id": "2015-spring",
+    "year": 2015,
+    "season": "Spring",
+    "date": "2015-03-28",
+    "name": "Chicken Stew & Barbeque",
+    "notes": "",
+    "flyer": "TEC_2015_1.png"
+  },
+  {
+    "id": "2015-fall",
+    "year": 2015,
+    "season": "Fall",
+    "date": "2015-09-19",
+    "name": "Countdown Cookout",
+    "notes": "",
+    "flyer": "TEC_2015_2.png"
+  },
+  {
+    "id": "2016-spring",
+    "year": 2016,
+    "season": "Spring",
+    "date": "2016-04-23",
+    "name": "Mark Lyle & Ronnie Davis Memorial Barbeque",
+    "notes": "The first event to raise money for D.R.A.W., in honor of two friends lost that spring.",
+    "raised": 1460,
+    "totalAfter": 1460,
+    "flyer": "TEC_2016_1.png"
+  },
+  {
+    "id": "2016-fall",
+    "year": 2016,
+    "season": "Fall",
+    "date": "2016-09-17",
+    "name": "Fall Benefit Barbeque",
+    "notes": "The club was named D.R.A.W.'s 2016 Organization of the Year.",
+    "raised": 1425,
+    "totalAfter": 2885,
+    "flyer": "TEC_2016_2.jpg"
+  },
+  {
+    "id": "2017-spring",
+    "year": 2017,
+    "season": "Spring",
+    "date": "2017-04-29",
+    "name": "Spring Benefit Barbeque",
+    "notes": "",
+    "flyer": "TEC_2017_1.jpg"
+  },
+  {
+    "id": "2017-fall",
+    "year": 2017,
+    "season": "Fall",
+    "date": "2017-09-16",
+    "name": "Fall Benefit Barbeque",
+    "notes": "",
+    "flyer": "TEC_2017_2.jpg"
+  },
+  {
+    "id": "2018-spring",
+    "year": 2018,
+    "season": "Spring",
+    "date": "2018-04-28",
+    "name": "Spring Benefit Barbeque",
+    "notes": "A new home: the Sportsman pits, sites 13 and 14.",
+    "flyer": "TEC_2018_1.png"
+  },
+  {
+    "id": "2018-fall",
+    "year": 2018,
+    "season": "Fall",
+    "date": "2018-10-13",
+    "name": "Fall Benefit Barbeque",
+    "notes": "Hurricane Michael weekend.",
+    "raised": 1724,
+    "flyer": "TEC_2018_2.jpg"
+  },
+  {
+    "id": "2019-spring",
+    "year": 2019,
+    "season": "Spring",
+    "date": "2019-04-27",
+    "name": "Spring Benefit Barbeque",
+    "notes": "",
+    "totalAfter": 12582,
+    "flyer": "TEC_2019_1.jpg"
+  },
+  {
+    "id": "2019-fall",
+    "year": 2019,
+    "season": "Fall",
+    "date": "2019-10-12",
+    "name": "Fall Benefit Barbeque",
+    "notes": "Live music.",
+    "raised": 2560,
+    "totalAfter": 15142,
+    "raisedIsEstimate": true,
+    "flyer": "TEC_2019_2.jpg"
+  },
+  {
+    "id": "2021-spring",
+    "year": 2021,
+    "season": "Spring",
+    "date": "2021-05-15",
+    "name": "Memorial BBQ",
+    "notes": "A private event, open mainly to sponsors and invited teams and guests. Given in honor of Phillip \"Kilroy\" Bishop.",
+    "raised": 2500,
+    "totalAfter": 17642,
+    "private": true
+  },
+  {
+    "id": "2021-fall",
+    "year": 2021,
+    "season": "Fall",
+    "date": "2021-09-18",
+    "name": "Memorial BBQ",
+    "notes": "A private event, open mainly to sponsors and invited teams and guests. Passed the $20,000 goal.",
+    "raised": 2363,
+    "totalAfter": 20005,
+    "private": true
+  },
+  {
+    "id": "2022-spring",
+    "year": 2022,
+    "season": "Spring",
+    "date": "2022-04-30",
+    "name": "Memorial BBQ",
+    "notes": "A record night at the time.",
+    "raised": 3510,
+    "totalAfter": 23555,
+    "flyer": "TEC_2022_1.png"
+  },
+  {
+    "id": "2022-fall",
+    "year": 2022,
+    "season": "Fall",
+    "date": "2022-09-24",
+    "name": "Memorial BBQ",
+    "notes": "",
+    "raised": 2665,
+    "totalAfter": 26220,
+    "flyer": "TEC_2022_2.png"
+  },
+  {
+    "id": "2023-spring",
+    "year": 2023,
+    "season": "Spring",
+    "date": "2023-04-29",
+    "name": "Memorial BBQ",
+    "notes": "",
+    "raised": 5158,
+    "totalAfter": 31378,
+    "raisedIsEstimate": true,
+    "flyer": "TEC_2023_1_flyer.png"
+  },
+  {
+    "id": "2023-fall",
+    "year": 2023,
+    "season": "Fall",
+    "date": "2023-09-23",
+    "name": "Memorial BBQ",
+    "notes": "The Rockaholics, Jimmy Freeman and Sammy Eubanks.",
+    "raised": 4400,
+    "totalAfter": 35778,
+    "flyer": "TEC_2023_2_flyer.png"
+  },
+  {
+    "id": "2024-spring",
+    "year": 2024,
+    "season": "Spring",
+    "date": "2024-04-27",
+    "name": "Memorial BBQ",
+    "notes": "",
+    "raised": 6105,
+    "totalAfter": 41883,
+    "flyer": "TEC_2024_1_flyer.png"
+  },
+  {
+    "id": "2024-fall",
+    "year": 2024,
+    "season": "Fall",
+    "date": "2024-09-21",
+    "name": "Memorial BBQ",
+    "notes": "Given in memory of Rosalee Noble.",
+    "raised": 8880,
+    "totalAfter": 50763,
+    "flyer": "TEC_2024_2_flyer.png"
+  },
+  {
+    "id": "2025-spring",
+    "year": 2025,
+    "season": "Spring",
+    "date": "2025-04-26",
+    "name": "Memorial BBQ",
+    "notes": "The first live auction after dinner.",
+    "raised": 8300,
+    "totalAfter": 59063,
+    "flyer": "TEC_2025_1_flyer.jpg"
+  },
+  {
+    "id": "2025-fall",
+    "year": 2025,
+    "season": "Fall",
+    "date": "2025-09-20",
+    "name": "Final Fall Event",
+    "notes": "A celebration of life for Rosalee Noble. The most successful event to date.",
+    "raised": 29350,
+    "totalAfter": 88413,
+    "raisedIsEstimate": true,
+    "flyer": "TEC_2025_2_Flyer.png"
+  },
+  {
+    "id": "2026-spring",
+    "year": 2026,
+    "season": "Spring",
+    "date": "2026-04-25",
+    "name": "Memorial BBQ",
+    "notes": "The only event of 2026. The all-time total passed $100,000.",
+    "raised": 11592,
+    "totalAfter": 100005,
+    "flyer": "TEC_2026.1_Flyer.tiff"
+  }
+]

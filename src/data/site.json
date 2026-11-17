@@ -1,0 +1,14 @@
+{
+  "name": "The Top End Club",
+  "shortName": "Top End Club",
+  "tagline": "Trackside at zMAX Dragway since 2012.",
+  "founded": 2012,
+  "location": "zMAX Dragway, Concord, North Carolina",
+  "facebookGroup": "https://www.facebook.com/groups/topendclub",
+  "draw": {
+    "total": 100005,
+    "asOf": "Spring 2026 event",
+    "since": 2016,
+    "url": "https://www.drawonline.org"
+  }
+}
